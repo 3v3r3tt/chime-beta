@@ -4,10 +4,12 @@
   "description": "This is a demo web app for music sharing",
   "main": "server.js",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "~1.9.3",
     "express": "^4.13.3",
+    "jsonwebtoken": "^5.4.1",
     "mongoose": "^4.2.8",
-    "slimple": "^0.6.5",
-    "slm": "^0.4.2"
+    "morgan": "~1.5.0"
   },
   "author": "PEvMo",
   "scripts": {

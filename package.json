@@ -1,19 +1,12 @@
 {
-  "name": "chime-web-app",
-  "version": "0.0.1",
-  "description": "This is a demo web app for music sharing",
+  "name": "node-api",
   "main": "server.js",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.9.3",
-    "express": "^4.13.3",
-    "jsonwebtoken": "^5.4.1",
-    "mongoose": "^4.2.8",
+    "express": "~4.10.3",
+    "jsonwebtoken": "^1.2.0",
+    "mongoose": "~3.8.19",
     "morgan": "~1.5.0"
-  },
-  "author": "PEvMo",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "license": "ISC"
+  }
 }

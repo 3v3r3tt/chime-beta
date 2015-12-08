@@ -33,7 +33,25 @@ angular.module('app.routes', ['ngRoute'])
 			templateUrl: 'app/views/pages/users/single.html',
 			controller: 'userEditController',
 			controllerAs: 'user'
-		});
+		})
+
+		.when('/chimes', {
+			templateUrl: 'app/views/pages/chimes/all.html',
+			controller: 'chimeController',
+			controllerAs: 'chime'
+		})
+
+		.when('/chimes/create', {
+			templateUrl: 'app/views/pages/chimes/single.html',
+			controller: 'chimeCreateController',
+			controllerAs: 'chime'
+		})
+
+		.when('/chimes/:chime_id', {
+			templateUrl: 'app/views/pages/chimes/single.html',
+			controller: 'chimeEditController',
+			controllerAs: 'chime'
+		})
 
 	$locationProvider.html5Mode(true);
 

@@ -1,5 +1,6 @@
 var bodyParser = require('body-parser'); 	// get body-parser
 var User       = require('../models/user');
+var Chime			 = require('../models/chime');
 var jwt        = require('jsonwebtoken');
 var config     = require('../../config');
 
@@ -9,33 +10,6 @@ var superSecret = config.secret;
 module.exports = function(app, express) {
 
 	var apiRouter = express.Router();
-
-	// route to generate sample user
-	apiRouter.post('/sample', function(req, res) {
-
-		// look for the user named chris
-		User.findOne({ 'username': 'chris' }, function(err, user) {
-
-			// if there is no chris user, create one
-			if (!user) {
-				var sampleUser = new User();
-
-				sampleUser.name = 'Chris';  
-				sampleUser.username = 'chris'; 
-				sampleUser.password = 'supersecret';
-
-				sampleUser.save();
-			} else {
-				console.log(user);
-
-				// if there is a chris, update his password
-				user.password = 'supersecret';
-				user.save();
-			}
-
-		});
-
-	});
 
 	// route to authenticate a user (POST http://localhost:8080/api/authenticate)
 	apiRouter.post('/authenticate', function(req, res) {
@@ -49,18 +23,18 @@ module.exports = function(app, express) {
 
 	    // no user with that username was found
 	    if (!user) {
-	      res.json({ 
-	      	success: false, 
-	      	message: 'Authentication failed. User not found.' 
+	      res.json({
+	      	success: false,
+	      	message: 'Authentication failed. User not found.'
 	    	});
 	    } else if (user) {
 
 	      // check if password matches
 	      var validPassword = user.comparePassword(req.body.password);
 	      if (!validPassword) {
-	        res.json({ 
-	        	success: false, 
-	        	message: 'Authentication failed. Wrong password.' 
+	        res.json({
+	        	success: false,
+	        	message: 'Authentication failed. Wrong password.'
 	      	});
 	      } else {
 
@@ -79,7 +53,7 @@ module.exports = function(app, express) {
 	          message: 'Enjoy your token!',
 	          token: token
 	        });
-	      }   
+	      }
 
 	    }
 
@@ -98,17 +72,17 @@ module.exports = function(app, express) {
 	  if (token) {
 
 	    // verifies secret and checks exp
-	    jwt.verify(token, superSecret, function(err, decoded) {      
+	    jwt.verify(token, superSecret, function(err, decoded) {
 
 	      if (err) {
-	        res.status(403).send({ 
-	        	success: false, 
-	        	message: 'Failed to authenticate token.' 
-	    	});  	   
-	      } else { 
+	        res.status(403).send({
+	        	success: false,
+	        	message: 'Failed to authenticate token.'
+	    	});
+	      } else {
 	        // if everything is good, save to request for use in other routes
 	        req.decoded = decoded;
-	            
+
 	        next(); // make sure we go to the next routes and don't stop here
 	      }
 	    });
@@ -117,18 +91,18 @@ module.exports = function(app, express) {
 
 	    // if there is no token
 	    // return an HTTP response of 403 (access forbidden) and an error message
-   	 	res.status(403).send({ 
-   	 		success: false, 
-   	 		message: 'No token provided.' 
+   	 	res.status(403).send({
+   	 		success: false,
+   	 		message: 'No token provided.'
    	 	});
-	    
+
 	  }
 	});
 
-	// test route to make sure everything is working 
+	// test route to make sure everything is working
 	// accessed at GET http://localhost:8080/api
 	apiRouter.get('/', function(req, res) {
-		res.json({ message: 'hooray! welcome to our api!' });	
+		res.json({ message: 'Welcome to the Chime web API!' });
 	});
 
 	// on routes that end in /users
@@ -137,7 +111,7 @@ module.exports = function(app, express) {
 
 		// create a user (accessed at POST http://localhost:8080/users)
 		.post(function(req, res) {
-			
+
 			var user = new User();		// create a new instance of the User model
 			user.name = req.body.name;  // set the users name (comes from the request)
 			user.username = req.body.username;  // set the users username (comes from the request)
@@ -146,9 +120,9 @@ module.exports = function(app, express) {
 			user.save(function(err) {
 				if (err) {
 					// duplicate entry
-					if (err.code == 11000) 
+					if (err.code == 11000)
 						return res.json({ success: false, message: 'A user with that username already exists. '});
-					else 
+					else
 						return res.send(err);
 				}
 
@@ -219,7 +193,65 @@ module.exports = function(app, express) {
 	// api endpoint to get user information
 	apiRouter.get('/me', function(req, res) {
 		res.send(req.decoded);
-	});
+	})
+
+	// on routes that end in /chimes
+	// ------------------------------------------------------
+	apiRouter.route('/chimes')
+
+		.post(function(req, res) {
+			var chime = new Chime();
+			chime.title = req.body.title;
+			chime.author = req.body.author;
+			chime.date = req.body.date;
+			chime.tags = req.body.tags;
+
+			chime.save(function(err) {
+				if(err) {
+					return res.send(err);
+				}
+				res.json({ message: 'Chime created!' });
+			});
+		})
+
+		.get(function(req, res) {
+			Chime.find({}, function(err, chimes) {
+				if (err) res.send(err);
+				res.json(chimes);
+			});
+		});
+
+	apiRouter.route('/chimes/:chime_id')
+
+		.get(function(req, res) {
+			Chime.findById(req.params.chime_id, function(err, chime) {
+				if (err) res.send(err);
+				res.json(chime);
+			});
+		})
+
+		.put(function(req, res) {
+			Chime.findById(req.params.chime_id, function(err, chime) {
+				if (req.body.title) chime.title = req.body.title;
+				if (req.body.author) chime.author = req.body.author;
+				if (req.body.date) chime.date = req.body.date;
+				if (req.body.tags) chime.tags = req.body.tags;
+
+				chime.save(function(err){
+					if (err) res.send(err);
+					res.json({ message: 'Chime updated!' });
+				});
+			});
+		})
+
+		.delete(function(req, res) {
+			Chime.remove({
+				_id: req.params.chime_id
+			}, function(err, chime) {
+				if (err) res.send(err);
+				res.json({ message: 'Successfully deleted!' })
+			});
+		});
 
 	return apiRouter;
 };

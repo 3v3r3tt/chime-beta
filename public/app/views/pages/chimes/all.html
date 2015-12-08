@@ -1,0 +1,37 @@
+<div class="page-header">
+  <h1>
+		Chime
+		<a href="/chimes/create" class="btn btn-default">
+			<span class="glyphicon glyphicon-plus"></span>
+			New Chime
+		</a>
+	</h1>
+
+</div>
+
+<div class="jumbotron text-center" ng-show="chime.processing">
+	<span class="glyphicon glyphicon-repeat spinner"></span>
+	<p>Loading Chimes...</p>
+</div>
+
+<table class="table table-bordered table-striped" ng-show="chime.chimes">
+	<thead>
+		<tr>
+			<th>_id</th>
+			<th>Title</th>
+			<th>Author</th>
+			<th class="col-sm-2"></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="chimeObj in chime.chimes">
+			<td>{{ chimeObj._id }}</td>
+			<td>{{ chimeObj.title }}</td>
+			<td>{{ chimeObj.author }}</td>
+			<td class="col-sm-2">
+				<a ng-href="/chimes/{{ chimeObj._id }}" class="btn btn-danger">Edit</a>
+				<a href="#" ng-click="chime.deleteChime(chimeObj._id)" class="btn btn-primary">Delete</a>
+			</td>
+		</tr>
+	</tbody>
+</table>

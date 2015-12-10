@@ -1,9 +1,23 @@
 <div class="jumbotron text-center">
 	<h1>Welcome to Chime!</h1>
+	<div ng-if="!main.loggedIn" class="container">
+		<p>SIGN UP and Get Early Access to our VIP Beta Launch</p>
+		<form class="form-inline" ng-submit="main.doSignUp()">
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="Enter first name" ng-required="true">
+				<input type="email" class="form-control" placeholder="Enter email address" ng-required="true">
+				<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-copy"></span></button>
+			</div>
+		</form>
+	</div>
+</div>
 
-	<div ng-if="!main.loggedIn">
+<div class="jumbotron text-center">
+	<h1>Already got credentials?</h1>
 		<p>Login to start chiming.</p>
-		<a href="/login" class="btn btn-primary">Login</a>
+		<a href="/login" class="btn btn-primary">
+			<span class="glyphicon glyphicon-equalizer"></span> Login
+		</a>
 	</div>
 
 	<div ng-if="main.loggedIn">

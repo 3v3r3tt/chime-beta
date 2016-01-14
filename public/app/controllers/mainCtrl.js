@@ -41,6 +41,7 @@ angular.module('mainCtrl', [])
 
 	vm.doSignUp = function() {
 		console.log("signing up...");
+		vm.hideSignUp = true;
 		return true;
 	};
 

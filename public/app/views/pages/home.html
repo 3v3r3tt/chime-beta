@@ -1,27 +1,47 @@
-<div class="jumbotron text-center">
-	<h1>Welcome to Chime!</h1>
-	<div ng-if="!main.loggedIn" class="container">
-		<p>SIGN UP and Get Early Access to our VIP Beta Launch</p>
-		<form class="form-inline" ng-submit="main.doSignUp()">
-			<div class="form-group">
-				<input type="text" class="form-control" placeholder="Enter first name" ng-required="true">
-				<input type="email" class="form-control" placeholder="Enter email address" ng-required="true">
-				<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-copy"></span></button>
+<div>
+	<div class="jumbotron text-center">
+		<img src="assets/images/ChimeIcon.png" width="100px">
+		<h1>Welcome to Chime!</h1>
+		<div ng-if="!main.loggedIn" class="container">
+			<p>SIGN UP and Get Early Access to our VIP Beta Launch</p>
+			<form class="form-inline" ng-submit="main.doSignUp()">
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="Enter first name" ng-required="true">
+					<input type="email" class="form-control" placeholder="Enter email address" ng-required="true">
+					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-copy"></span></button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div class="jumbotron text-center">
+		<div class="row">
+			<div class="col-xs-4">
+				<h3><span class="glyphicon glyphicon-headphones"></span> Connect</h3>
 			</div>
-		</form>
-	</div>
-</div>
-
-<div class="jumbotron text-center">
-	<h1>Already got credentials?</h1>
-		<p>Login to check out Chime Beta.</p>
-		<a href="/login" class="btn btn-primary">
-			<span class="glyphicon glyphicon-equalizer"></span> Login
-		</a>
-	</div>
-
-	<div ng-if="main.loggedIn">
-		<p>Manage your users.</p>
-		<a href="/users" class="btn btn-primary">View Users</a>
+			<div class="col-xs-4">
+				<h3><span class="glyphicon glyphicon-music"></span> Share</h3>
+			</div>
+			<div class="col-xs-4">
+				<h3><span class="glyphicon glyphicon-search"></span> Discover</h3>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-4">
+				<p>
+					Where words leave off, music begins. "Chimes" are segments of songs that allow you to connect on a deeper level with friends and followers.
+				</p>
+			</div>
+			<div class="col-xs-4">
+				<p>
+					People who love music, love to share good music. Help others discover new songs and artists by sharing Chimes of your favorite music.
+				</p>
+			</div>
+			<div class="col-xs-4">
+				<p>
+					Follow people whose music taste you respect. Search based on genre or hashtag and get quick exposure to the best parts of songs.
+				</p>
+			</div>
+		</div>
 	</div>
 </div>

@@ -34,33 +34,36 @@
 	<script src="app/app.js"></script>
 </head>
 <body ng-app="userApp" ng-controller="mainController as main">
-
-<!-- NAVBAR -->
-<header>
-	<div class="navbar navbar-inverse" ng-if="main.loggedIn">
-	<div class="container">
-		<div class="navbar-header">
-			<a class="navbar-brand" href="#">
-				<img src="assets/images/ChimeLogo1.png" height="50px" width="50px">
-			</a>
+	<!-- NAVBAR -->
+	<header>
+		<div class="navbar navbar-inverse" ng-if="main.loggedIn">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">
+					<img src="assets/images/ChimeIcon.png" height="30px" width="30px">
+				</a>
+			</div>
+			<ul class="nav navbar-nav">
+				<li><a href="/users"><span class="glyphicon glyphicon-user"></span> Users</a></li>
+				<li><a href="/chimes"><span class="glyphicon glyphicon-music"></span> Chimes</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li ng-if="!main.loggedIn"><a href="/login">Login</a></li>
+				<li ng-if="main.loggedIn" class="navbar-text">Hello {{ main.user.username }}!</li>
+				<li ng-if="main.loggedIn"><a href="#" ng-click="main.doLogout()">Logout</a></li>
+			</ul>
 		</div>
-		<ul class="nav navbar-nav">
-			<li><a href="/users"><span class="glyphicon glyphicon-user"></span> Users</a></li>
-			<li><a href="/chimes"><span class="glyphicon glyphicon-music"></span> Chimes</a></li>
-		</ul>
-		<ul class="nav navbar-nav navbar-right">
-			<li ng-if="!main.loggedIn"><a href="/login">Login</a></li>
-			<li ng-if="main.loggedIn" class="navbar-text">Hello {{ main.user.username }}!</li>
-			<li ng-if="main.loggedIn"><a href="#" ng-click="main.doLogout()">Logout</a></li>
-		</ul>
-	</div>
-	</div>
-</header>
+		</div>
+	</header>
 
-<main class="container">
-	<!-- ANGULAR VIEWS -->
-	<div ng-view></div>
-</main>
-
+	<main class="container">
+		<!-- ANGULAR VIEWS -->
+		<div ng-view></div>
+	</main>
 </body>
+
+<footer>
+	<p>Already got credentials? <a href="/login">Login</a></p>
+</footer>
+
 </html>

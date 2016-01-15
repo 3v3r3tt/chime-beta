@@ -6,30 +6,31 @@
 			Add Interested User
 		</a>
 	</h1>
-
 </div>
 
-<div class="jumbotron text-center" ng-show="interestedUser.processing">
-	<span class="glyphicon glyphicon-repeat spinner"></span>
-	<p>Loading Interested Users...</p>
-</div>
+<div class="jumbotron">
+  <div class="jumbotron text-center" ng-show="interestedUser.processing">
+  	<span class="glyphicon glyphicon-repeat spinner"></span>
+  	<p>Loading Interested Users...</p>
+  </div>
 
-<table class="table table-bordered table-striped" ng-show="interestedUser.interestedUsers">
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Email</th>
-			<th class="col-sm-2"></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr ng-repeat="interestedUserObj in interestedUser.interestedUsers">
-			<td>{{ interestedUserObj.name }}</td>
-			<td>{{ interestedUserObj.email }}</td>
-			<td class="col-sm-2">
-				<a ng-href="/interested_users/{{ interestedUserObj._id }}" class="btn btn-danger">Edit</a>
-				<a href="#" ng-click="interestedUser.deleteInterestedUser(interestedUserObj._id)" class="btn btn-primary">Delete</a>
-			</td>
-		</tr>
-	</tbody>
-</table>
+  <table class="table table-bordered table-striped" ng-show="interestedUser.interestedUsers">
+  	<thead>
+  		<tr>
+  			<th>Name</th>
+  			<th>Email</th>
+  			<th class="col-sm-2"></th>
+  		</tr>
+  	</thead>
+  	<tbody>
+  		<tr ng-repeat="interestedUserObj in interestedUser.interestedUsers">
+  			<td>{{ interestedUserObj.name }}</td>
+  			<td>{{ interestedUserObj.email }}</td>
+  			<td class="col-sm-2">
+  				<a ng-href="/interested_users/{{ interestedUserObj._id }}" class="btn btn-danger">Edit</a>
+  				<a href="#" ng-click="interestedUser.deleteInterestedUser(interestedUserObj._id)" class="btn btn-primary">Delete</a>
+  			</td>
+  		</tr>
+  	</tbody>
+  </table>
+</div>

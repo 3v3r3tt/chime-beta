@@ -14,10 +14,11 @@ body{
 	background-color: transparent !important;
 	opacity: 0.75;
 	height: 100%;
+	font-family: "Lucida Console", Monaco, monospace !important;
 }
 
-.primary-color{
-	color: #00ECF2;
+h1{
+	color: #00ECF2 !important;
 }
 
 /* HEADER

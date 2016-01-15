@@ -55,6 +55,24 @@ angular.module('app.routes', ['ngRoute'])
 			controllerAs: 'chime'
 		})
 
+		.when('/interested_users', {
+			templateUrl: 'app/views/pages/interested_users/all.html',
+			controller: 'interestedUserController',
+			controllerAs: 'interestedUser'
+		})
+
+		.when('/interested_users/create', {
+			templateUrl: 'app/views/pages/interested_users/single.html',
+			controller: 'interestedUserCreateController',
+			controllerAs: 'interestedUser'
+		})
+
+		.when('/interested_users/:interested_user_id', {
+			templateUrl: 'app/views/pages/interested_users/single.html',
+			controller: 'interestedUserEditController',
+			controllerAs: 'interestedUser'
+		})
+
 	$locationProvider.html5Mode(true);
 
 });

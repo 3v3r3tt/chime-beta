@@ -5,8 +5,10 @@ angular.module('userApp', [
   'mainCtrl',
   'userCtrl',
   'chimeCtrl',
+  'interestedUserCtrl',
   'userService',
-  'chimeService'])
+  'chimeService',
+  'interestedUserService'])
 
   .config(function($httpProvider) {
     $httpProvider.interceptors.push('AuthInterceptor')

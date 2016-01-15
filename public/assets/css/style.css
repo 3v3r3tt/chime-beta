@@ -16,6 +16,10 @@ body{
 	height: 100%;
 }
 
+.primary-color{
+	color: #00ECF2;
+}
+
 /* HEADER
 ===================== */
 header .navbar 		{
@@ -29,6 +33,19 @@ footer {
 }
 footer p {
 	text-align: center;
+}
+
+/* BOOTSTRAP OVERRIDES
+====================== */
+.table-striped>tbody>tr:nth-child(even)>td,
+.table-striped>tbody>tr:nth-child(even)>th {
+	background-color: #00ECF2;
+}
+
+
+.table-striped>thead>tr:nth-child(odd)>td,
+.table-striped>thead>tr:nth-child(odd)>th {
+	background-color: #00ECF2;
 }
 
 /* NGANIMATE

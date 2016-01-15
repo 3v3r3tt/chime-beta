@@ -6,8 +6,8 @@
 			<p>SIGN UP and Get Early Access to our VIP Beta Launch</p>
 			<form ng-if="!main.hideSignUp" class="form-inline" ng-submit="main.doSignUp()">
 				<div class="form-group">
-					<input type="text" class="form-control" placeholder="Enter name" ng-required="true">
-					<input type="email" class="form-control" placeholder="Enter email address" ng-required="true">
+					<input ng-model="main.interestedUser.name" type="text" class="form-control" placeholder="Enter name" ng-required="true">
+					<input ng-model="main.interestedUser.email" type="email" class="form-control" placeholder="Enter email address" ng-required="true">
 					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-copy"></span></button>
 				</div>
 			</form>

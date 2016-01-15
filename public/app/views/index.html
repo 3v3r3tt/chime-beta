@@ -23,11 +23,13 @@
 	<script src="app/controllers/mainCtrl.js"></script>
 	<script src="app/controllers/userCtrl.js"></script>
 	<script src="app/controllers/chimeCtrl.js"></script>
+	<script src="app/controllers/interestedUserCtrl.js"></script>
 
 	<!-- services -->
 	<script src="app/services/authService.js"></script>
 	<script src="app/services/userService.js"></script>
 	<script src="app/services/chimeService.js"></script>
+	<script src="app/services/interestedUserService.js"></script>
 
 	<!-- main Angular app files -->
 	<script src="app/app.routes.js"></script>
@@ -46,6 +48,7 @@
 			<ul class="nav navbar-nav">
 				<li><a href="/users"><span class="glyphicon glyphicon-user"></span> Users</a></li>
 				<li><a href="/chimes"><span class="glyphicon glyphicon-music"></span> Chimes</a></li>
+				<li><a href="/interested_users"><span class="glyphicon glyphicon-ice-lolly-tasted"></span> Interested Users</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li ng-if="!main.loggedIn"><a href="/login">Login</a></li>
@@ -63,7 +66,7 @@
 </body>
 
 <footer>
-	<p>Already got credentials? <a href="/login">Login</a></p>
+	<p ng-if="!main.loggedIn">Already have credentials? <a href="/login">Login</a></p>
 </footer>
 
 </html>

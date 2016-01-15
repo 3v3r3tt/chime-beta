@@ -3,11 +3,11 @@ angular.module('interestedUserService', [])
     var interestedUserFactory = {}
 
     interestedUserFactory.get = function(id) {
-      return $http.get('/public/interested_users/' + id);
+      return $http.get('/api/interested_users/' + id);
     };
 
     interestedUserFactory.all = function() {
-      return $http.get('/public/interested_users/');
+      return $http.get('/api/interested_users/');
     };
 
     interestedUserFactory.create = function(interestedUserData) {
@@ -15,11 +15,11 @@ angular.module('interestedUserService', [])
     };
 
     interestedUserFactory.update = function(id, interestedUserData) {
-      return $http.put('/public/interested_users/' + id, interestedUserData);
+      return $http.put('/api/interested_users/' + id, interestedUserData);
     };
 
     interestedUserFactory.delete = function(id) {
-      return $http.delete('/public/interested_users/' + id);
+      return $http.delete('/api/interested_users/' + id);
     };
 
     return interestedUserFactory;

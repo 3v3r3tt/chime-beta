@@ -5,7 +5,7 @@ var config     		= require('../../config');
 module.exports = function(app, express) {
 
 	var publicRouter = express.Router();
-
+	
 	// allow post to /interestedUsers w/o authentication
 	// ------------------------------------------------------
 	publicRouter.route('/interested_users')
@@ -21,6 +21,5 @@ module.exports = function(app, express) {
 				res.json({ message: 'Interested User created!' });
 			});
 		})
-
 	return publicRouter;
 };

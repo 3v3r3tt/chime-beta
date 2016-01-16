@@ -2,6 +2,11 @@
   "name": "node-api",
   "main": "server.js",
   "description": "This is the app description.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/3v3r3tt/chime-beta.git"
+  },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.14.2",
@@ -9,5 +14,9 @@
     "jsonwebtoken": "^5.5.4",
     "mongoose": "~3.8.19",
     "morgan": "~1.5.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-less": "^3.0.5"
   }
 }

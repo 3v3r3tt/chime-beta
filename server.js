@@ -41,7 +41,7 @@ app.use(express.static(__dirname + '/public'));
 var apiRoutes = require('./app/routes/api')(app, express);
 app.use('/api', apiRoutes);
 var publicRoutes = require('./app/routes/public')(app, express);
-app.use('/public', publicRoutes)
+app.use('/public', publicRoutes);
 
 // MAIN CATCHALL ROUTE ---------------
 // SEND USERS TO FRONTEND ------------

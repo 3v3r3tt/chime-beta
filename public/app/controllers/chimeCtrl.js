@@ -17,7 +17,7 @@ angular.module('chimeCtrl', ['chimeService'])
           Chime.all()
             .success(function(data) {
               vm.processing = false;
-              vm.chimes = data
+              vm.chimes = data;
             });
         });
     };
@@ -38,7 +38,7 @@ angular.module('chimeCtrl', ['chimeService'])
           vm.chimeData = {};
           vm.message = data.message;
         });
-    }
+    };
 
   })
 

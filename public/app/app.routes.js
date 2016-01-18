@@ -71,7 +71,7 @@ angular.module('app.routes', ['ngRoute'])
 			templateUrl: 'app/views/pages/interested_users/single.html',
 			controller: 'interestedUserEditController',
 			controllerAs: 'interestedUser'
-		})
+		});
 
 	$locationProvider.html5Mode(true);
 

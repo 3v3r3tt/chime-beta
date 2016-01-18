@@ -1,6 +1,6 @@
 angular.module('interestedUserService', [])
   .factory('InterestedUser', function($http) {
-    var interestedUserFactory = {}
+    var interestedUserFactory = {};
 
     interestedUserFactory.get = function(id) {
       return $http.get('/api/interested_users/' + id);

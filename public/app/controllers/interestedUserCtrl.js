@@ -17,7 +17,7 @@ angular.module('interestedUserCtrl', ['interestedUserService'])
           InterestedUser.all()
             .success(function(data) {
               vm.processing = false;
-              vm.interestedUsers = data
+              vm.interestedUsers = data;
             });
         });
     };
@@ -37,7 +37,7 @@ angular.module('interestedUserCtrl', ['interestedUserService'])
           vm.interestedUserData = {};
           vm.message = data.message;
         });
-    }
+    };
 
   })
 

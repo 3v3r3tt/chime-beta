@@ -1,6 +1,6 @@
 angular.module('chimeService', [])
   .factory('Chime', function($http) {
-    var chimeFactory = {}
+    var chimeFactory = {};
 
     chimeFactory.get = function(id) {
       return $http.get('/api/chimes/' + id);

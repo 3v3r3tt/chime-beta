@@ -4,6 +4,17 @@ var less = require('gulp-less');
 var minifyCSS = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var jshint = require('gulp-jshint');
+var uglify = require('gulp-uglify');
+var concat = require('gulp-concat');
+
+gulp.task('scripts', function() {
+  return gulp.src(['public/app/*.js', 'public/app/**/*.js'])
+    .pipe(jshint())
+    .pipe(jshint.reporter('default'))
+    .pipe(concat('all.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('public/dist'));
+});
 
 // CSS Task
 gulp.task('css', function() {

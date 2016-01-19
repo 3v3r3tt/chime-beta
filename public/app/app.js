@@ -10,6 +10,9 @@ angular.module('userApp', [
   'chimeService',
   'interestedUserService'])
 
-  .config(function($httpProvider) {
-    $httpProvider.interceptors.push('AuthInterceptor');
-  });
+  .config([
+    '$httpProvider',
+    function($httpProvider) {
+      $httpProvider.interceptors.push('AuthInterceptor');
+    }
+  ]);

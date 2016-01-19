@@ -20,9 +20,18 @@
 		</div>
 
 		<div class="form-group">
+			<label class="col-sm-2 control-label">Get Track</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" ng-model="chime.chimeData.trackId">
+				<button type="button" class="btn btn-primary" ng-click="chime.getTrack(chime.chimeData.trackId)">Search</button>
+			</div>
+		</div>
+
+		<div class="form-group">
 		<div class="col-sm-offset-2 col-sm-6">
 			<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="chime.type == 'create'">Create Chime</button>
 			<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="chime.type == 'edit'">Update Chime</button>
+			<p>Result: {{chime.soundCloudTrack}}</p>
 		</div>
 		</div>
 	</form>

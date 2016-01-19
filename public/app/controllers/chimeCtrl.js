@@ -1,4 +1,4 @@
-angular.module('chimeCtrl', ['chimeService'])
+angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
   .controller('chimeController', [
     'Chime',
     function(Chime) {
@@ -28,9 +28,16 @@ angular.module('chimeCtrl', ['chimeService'])
 
   .controller('chimeCreateController', [
     'Chime',
-    function(Chime) {
+    'SoundCloud',
+    function(Chime, SoundCloud) {
       var vm = this;
       vm.type = 'create';
+
+      vm.getTrack = function(id) {
+        //TODO: need to make this a promise
+        vm.soundCloudTrack = SoundCloud.getTrack(id);
+        console.log(vm.soundCloudTrack);
+      };
 
       vm.saveChime = function() {
         vm.processing = true;

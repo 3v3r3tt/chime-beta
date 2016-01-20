@@ -35,6 +35,10 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
       vm.type = 'create';
       vm.soundCloud = {};
 
+      vm.authenticateSoundCloud = function() {
+        SoundCloud.authenticate();
+      };
+
       vm.getTrack = function(trackId) {
         SoundCloud.getTrack(trackId)
           .then(function(track) {

@@ -1,12 +1,14 @@
 angular.module('soundCloudService', [])
 	.factory('SoundCloud', [
-		'$log',
-		function($log) {
+		'$location',
+		function($location) {
       var CLIENT_ID = '09552849399f3a58cd8b85d8c5b1218d';
+      var BASE_URL = $location.protocol() + "://" + $location.host() + ":" + $location.port();
       var soundCloudFactory = {};
 
       SC.initialize({
-  		  client_id: CLIENT_ID
+  		  client_id: CLIENT_ID,
+        redirect_uri: BASE_URL + '/callback'
   		});
 
       soundCloudFactory.getTrack = function(id) {
@@ -16,6 +18,16 @@ angular.module('soundCloudService', [])
       soundCloudFactory.searchTracks = function(term) {
         return SC.get('/tracks', {
           q: term
+        });
+      };
+
+      soundCloudFactory.authenticate = function authenticate() {
+        // initiate authentication popup
+        return SC.connect(function() {
+          // This gets the authenticated user's username
+          SC.get('/me', function(me) {
+            alert('Hello, ' + me.username);
+          });
         });
       };
 

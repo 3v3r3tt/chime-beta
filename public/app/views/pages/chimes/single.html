@@ -4,7 +4,11 @@
 </div>
 
 <div class="jumbotron text-center">
+	<button ng-click="chime.authenticateSoundCloud()" class="btn btn-success btn-lg btn-block">
+		Click here to authenticate SoundCloud!
+	</button>
 	<form class="form-horizontal" ng-submit="chime.getTrack(chime.chimeData.trackId)">
+
 		<div class="form-group">
 			<label class="col-sm-2 control-label">Get Chime Track</label>
 			<div class="col-sm-6">

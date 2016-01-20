@@ -12,6 +12,14 @@
 			</div>
 			<button type="submit" class="btn btn-success btn-lg btn-block">Search</button>
 		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Search Tracks</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" ng-model="chime.chimeData.trackSearch">
+			</div>
+			<button ng-click="chime.searchTracks(chime.chimeData.trackSearch)" class="btn btn-success btn-lg btn-block">Search</button>
+		</div>
 	</form>
 </div>
 

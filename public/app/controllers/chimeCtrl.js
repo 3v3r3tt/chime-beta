@@ -29,14 +29,22 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
   .controller('chimeCreateController', [
     'Chime',
     'SoundCloud',
-    function(Chime, SoundCloud) {
+    '$scope',
+    function(Chime, SoundCloud, $scope) {
       var vm = this;
       vm.type = 'create';
+      vm.soundCloud = {};
 
-      vm.getTrack = function(id) {
-        //TODO: need to make this a promise
-        vm.soundCloudTrack = SoundCloud.getTrack(id);
-        console.log(vm.soundCloudTrack);
+      vm.getTrack = function(trackId) {
+        SoundCloud.getTrack(trackId)
+          .then(function(track) {
+            vm.soundCloud.track = track;
+            console.log(vm.soundCloud);
+            $scope.$apply();
+          }, function(error) {
+            console.log("Track with that id does not exist: ");
+            console.log(error);
+          });
       };
 
       vm.saveChime = function() {
@@ -50,7 +58,6 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
             vm.message = data.message;
           });
       };
-
     }
   ])
 

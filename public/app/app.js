@@ -8,7 +8,8 @@ angular.module('userApp', [
   'interestedUserCtrl',
   'userService',
   'chimeService',
-  'interestedUserService'])
+  'interestedUserService',
+  'ui.bootstrap'])
 
   .config([
     '$httpProvider',

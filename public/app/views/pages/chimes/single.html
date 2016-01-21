@@ -7,7 +7,21 @@
   <div class="panel-heading">
     <a  ng-click="chime.authenticateSoundCloud()" class="btn btn-warning btn-sm pull-right">
 			<i class="fa fa-key"></i> Authenticate</a>
-    <h4><i class="fa fa-lg fa-soundcloud"></i> SoundCloud</h4>
+
+
+			<div class="btn-group" uib-dropdown is-open="status.isopen">
+	      <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+	        <h4><i class="fa fa-lg fa-soundcloud"></i> SoundCloud <span class="caret"></h4></span>
+	      </button>
+	      <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+	        <li role="menuitem"><a href="#">SoundCloud</a></li>
+	        <li role="menuitem"><a href="#">Spotify</a></li>
+	        <li role="menuitem"><a href="#">Google Play</a></li>
+					<li role="menuitem"><a href="#">YouTube</a></li>
+	      </ul>
+	    </div>
+
+
   </div>
 
   <div class="panel-body">

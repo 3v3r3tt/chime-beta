@@ -3,19 +3,116 @@
 	<h1 ng-if="chime.type == 'edit'">Edit Chime</h1>
 </div>
 
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <a  ng-click="chime.authenticateSoundCloud()" class="btn btn-warning btn-sm pull-right">
+			<i class="fa fa-key"></i> Authenticate</a>
+
+
+			<div class="btn-group" uib-dropdown is-open="status.isopen">
+	      <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+	        <h4><i class="fa fa-lg" ng-class="chime.currentMusicProvider.icon"></i> {{chime.currentMusicProvider.name}} <span class="caret"></h4></span>
+	      </button>
+	      <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+					<li ng-click="chime.setMusicProvider(provider)" ng-repeat="provider in chime.musicProviders" role="menuitem">
+						<a href="#">{{provider.name}}</a>
+					</li>
+	      </ul>
+	    </div>
+
+
+  </div>
+
+  <div class="panel-body">
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="form-group">
+					<label for="soundCloudSearchInput">Find a track</label>
+			    <div class="input-group">
+			      <input ng-model="chime.soundCloudSearchInput" type="text" class="form-control" id="soundCloudSearchInput" placeholder="Type here to search SoundCloud..">
+			      <span class="input-group-btn">
+			        <button ng-click="chime.searchTracks(chime.soundCloudSearchInput)" class="btn btn-default" type="button">Search</button>
+			      </span>
+			    </div>
+				</div>
+
+				<div class="form-group">
+					<label for="soundCloudSearchInput">Results</label>
+					<table class="table table-bordered table-hover">
+					  <thead>
+							<tr>
+								<th class="col-xs-3">Title</th>
+								<th class="col-xs-2">User</th>
+								<th class="col-xs-2">Image</th>
+								<th class="col-xs-5">Waveform</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="track in chime.soundCloud.tracks">
+								<td ng-bind="track.title"></td>
+								<td ng-bind="track.user.username"></td>
+								<td><img type="text" src="{{track.user.avatar_url}}"></td>
+								<td><img class="waveform" src="{{track.waveform_url}}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+		  </div>
+		</div>
+
+  </div>
+	<div class="panel-footer">
+		<a  class="btn btn-primary btn-sm pull-right"><i class="fa fa-plus"></i> Select Song</a>
+	</div>
+</div>
+<!--
+<div class="jumbotron text-center">
+	<button ng-click="chime.authenticateSoundCloud()" class="btn btn-success btn-lg btn-block">
+		Click here to authenticate SoundCloud!
+	</button>
+	<form class="form-horizontal" ng-submit="chime.getTrack(chime.chimeData.trackId)">
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Get Chime Track</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" ng-model="chime.chimeData.trackId">
+			</div>
+			<button type="submit" class="btn btn-success btn-lg btn-block">Search</button>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Search Tracks</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" ng-model="chime.chimeData.trackSearch">
+			</div>
+			<button ng-click="chime.searchTracks(chime.chimeData.trackSearch)" class="btn btn-success btn-lg btn-block">Search</button>
+		</div>
+	</form>
+</div>
+
 <div class="jumbotron text-center">
 	<form class="form-horizontal" ng-submit="chime.saveChime()">
 		<div class="form-group">
 			<label class="col-sm-2 control-label">Title</label>
 			<div class="col-sm-6">
-				<input type="text" class="form-control" ng-model="chime.chimeData.title">
+				<input type="text" class="form-control" ng-model="chime.soundCloud.track.title">
+			</div>
+			<div class="col-sm-4">
+				<img type="text" src="{{chime.soundCloud.track.user.avatar_url}}">
 			</div>
 		</div>
 
 		<div class="form-group">
-			<label class="col-sm-2 control-label">Author</label>
+			<label class="col-sm-2 control-label">Artist</label>
 			<div class="col-sm-6">
-				<input type="text" class="form-control" ng-model="chime.chimeData.author">
+				<input type="text" class="form-control" ng-model="chime.soundCloud.track.user.username">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Waveform</label>
+			<div ng-if="chime.soundCloud.track.waveform_url" class="col-sm-10">
+				<img class="waveform" src="{{chime.soundCloud.track.waveform_url}}">
 			</div>
 		</div>
 
@@ -29,11 +126,9 @@
 
 	<div class="row show-hide-message" ng-show="chime.message">
 		<div class="col-sm-6 col-sm-offset-2">
-
 			<div class="alert alert-info">
 				{{ chime.message }}
 			</div>
-
 		</div>
 	</div>
-</div>
+</div> -->

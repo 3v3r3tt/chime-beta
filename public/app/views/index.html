@@ -12,12 +12,17 @@
 	<link rel="stylesheet" href="assets/css/style.min.css">
 	<link rel="stylesheet" href="assets/libs/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="assets/libs/angular-animate-css/build/nga.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
 	<!-- JS -->
+	<script src="assets/libs/jquery/dist/jquery.min.js"></script>
+	<script src="assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
 	<!-- load angular and angular-route via CDN -->
 	<script src="assets/libs/angular/angular.min.js"></script>
 	<script src="assets/libs/angular-route/angular-route.min.js"></script>
 	<script src="assets/libs/angular-animate/angular-animate.min.js"></script>
+	<script src="assets/libs/angular-bootstrap/ui-bootstrap.min.js"></script>
+
 
 	<!-- controllers -->
 	<script src="app/controllers/mainCtrl.js"></script>
@@ -34,6 +39,11 @@
 	<!-- main Angular app files -->
 	<script src="app/app.routes.js"></script>
 	<script src="app/app.js"></script>
+
+
+	<script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>
+	<script src="app/services/soundCloudService.js"></script>
+
 </head>
 <body ng-app="userApp" ng-controller="mainController as main">
 	<!-- NAVBAR -->

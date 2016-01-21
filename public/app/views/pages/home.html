@@ -1,4 +1,56 @@
-<div>
+<div class="text-center">
+	<img src="assets/images/ChimeLogo2.png" width="300px" class="bigChimeLogo">
+	<div ng-if="!main.loggedIn" class="container">
+		<form ng-if="!main.hideSignUp" class="form-inline" ng-submit="main.doSignUp()">
+			<div class="form-group">
+				<input ng-model="main.interestedUser.email" type="email" class="form-control input-lg" placeholder="Enter email address..." ng-required="true">
+				<button type="submit" class="btn btn-lg btn-primary hidden-xs"><span class="glyphicon glyphicon-copy"></span></button>
+				<button type="submit" class="btn btn-lg btn-primary btn-block visible-xs"><span class="glyphicon glyphicon-copy"></span> Sign Up</button>
+			</div>
+		</form>
+		<h2 class="padding-20">Sign up to get access to our VIP pre-beta launch!</h2>
+		<h2 ng-if="main.hideSignUp"><span class="glyphicon glyphicon-check"></span> You're in the loop!</h2>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-4">
+			<h3><span class="glyphicon glyphicon-headphones"></span> Connect</h3>
+			<h4 class="visible-xs padding-20">
+				Where words leave off, music begins. "Chimes" are segments of songs that allow you to connect on a deeper level with friends and followers.
+			</h4>
+		</div>
+		<div class="col-xs-12 col-sm-4">
+			<h3><span class="glyphicon glyphicon-music"></span> Share</h3>
+			<h4 class="visible-xs padding-20">
+				People who love music, love to share good music. Help others discover new songs and artists by sharing Chimes of your favorite music.
+			</h4>
+		</div>
+		<div class="col-xs-12 col-sm-4">
+			<h3><span class="glyphicon glyphicon-search"></span> Discover</h3>
+			<h4 class="visible-xs padding-20">
+				Follow people whose music taste you respect. Search based on genre or hashtag and get quick exposure to the best parts of songs.
+			</h4>
+		</div>
+	</div>
+	<div class="row hidden-xs">
+		<div class="col-xs-12 col-sm-4">
+			<h4>
+				Where words leave off, music begins. "Chimes" are segments of songs that allow you to connect on a deeper level with friends and followers.
+			</h4>
+		</div>
+		<div class="col-xs-12 col-sm-4">
+			<h4>
+				People who love music, love to share good music. Help others discover new songs and artists by sharing Chimes of your favorite music.
+			</h4>
+		</div>
+		<div class="col-xs-12 col-sm-4">
+			<h4>
+				Follow people whose music taste you respect. Search based on genre or hashtag and get quick exposure to the best parts of songs.
+			</h4>
+		</div>
+	</div>
+</div>
+<!--
+
 	<div class="jumbotron text-center">
 		<h1>Welcome to Chime!</h1>
 		<img src="assets/images/ChimeIcon.png" width="100px">
@@ -45,4 +97,4 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->

@@ -33,7 +33,20 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
     function(Chime, SoundCloud, $scope) {
       var vm = this;
       vm.type = 'create';
+
       vm.soundCloud = {};
+      vm.musicProviders = [
+        { name: 'SoundCloud', icon: 'fa-soundcloud' },
+        { name: 'Spotify', icon: 'fa-spotify' },
+        { name: 'Google Play', icon: 'fa-play' },
+        { name: 'Apple Music', icon: 'fa-apple' },
+        { name: 'YouTube', icon: 'fa-youtube-play' },
+      ]
+      vm.currentMusicProvider = vm.musicProviders[0];
+
+      vm.setMusicProvider = function(provider) {
+        vm.currentMusicProvider = provider;
+      };
 
       vm.authenticateSoundCloud = function() {
         SoundCloud.authenticate();

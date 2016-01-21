@@ -55,7 +55,8 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
         SoundCloud.searchTracks(term)
           .then(function(results) {
             console.log(results);
-            vm.soundCloud.track = results[0];
+            vm.soundCloud.tracks = results;
+            $scope.$apply();
           }, function(error) {
             console.log("No tracks found matching that search term!");
             console.log(error);

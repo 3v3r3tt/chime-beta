@@ -3,6 +3,58 @@
 	<h1 ng-if="chime.type == 'edit'">Edit Chime</h1>
 </div>
 
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <a  ng-click="chime.authenticateSoundCloud()" class="btn btn-warning btn-sm pull-right">
+			<i class="fa fa-key"></i> Authenticate</a>
+    <h4><i class="fa fa-lg fa-soundcloud"></i> SoundCloud</h4>
+  </div>
+
+  <div class="panel-body">
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="form-group">
+					<label for="soundCloudSearchInput">Find a track</label>
+			    <div class="input-group">
+			      <input ng-model="chime.soundCloudSearchInput" type="text" class="form-control" id="soundCloudSearchInput" placeholder="Type here to search SoundCloud..">
+			      <span class="input-group-btn">
+			        <button ng-click="chime.searchTracks(chime.soundCloudSearchInput)" class="btn btn-default" type="button">Search</button>
+			      </span>
+			    </div>
+				</div>
+
+				<div class="form-group">
+					<label for="soundCloudSearchInput">Results</label>
+			    <div class="input-group">
+						<table class="table table-bordered table-hover">
+						  <thead>
+								<tr>
+									<th>Title</th>
+									<th>User</th>
+									<th>Image</th>
+									<th>Waveform</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="track in chime.soundCloud.tracks">
+									<td ng-bind="track.title"></td>
+									<td ng-bind="track.user.username"></td>
+									<td><img type="text" src="{{track.user.avatar_url}}"></td>
+									<td><img class="waveform" src="{{track.waveform_url}}"></td>
+								</tr>
+							</tbody>
+						</table>
+			    </div>
+				</div>
+		  </div>
+		</div>
+
+  </div>
+	<div class="panel-footer">
+		<a  class="btn btn-primary btn-sm pull-right"><i class="fa fa-plus"></i> Select Song</a>
+	</div>
+</div>
+<!--
 <div class="jumbotron text-center">
 	<button ng-click="chime.authenticateSoundCloud()" class="btn btn-success btn-lg btn-block">
 		Click here to authenticate SoundCloud!
@@ -68,4 +120,4 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->

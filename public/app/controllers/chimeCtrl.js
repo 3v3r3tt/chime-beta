@@ -41,7 +41,7 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
         { name: 'Google Play', icon: 'fa-play' },
         { name: 'Apple Music', icon: 'fa-apple' },
         { name: 'YouTube', icon: 'fa-youtube-play' },
-      ]
+      ];
       vm.currentMusicProvider = vm.musicProviders[0];
 
       vm.setMusicProvider = function(provider) {

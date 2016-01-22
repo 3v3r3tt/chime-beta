@@ -30,11 +30,13 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
     'Chime',
     'SoundCloud',
     '$scope',
-    function(Chime, SoundCloud, $scope) {
+    '$sce',
+    function(Chime, SoundCloud, $scope, $sce) {
       var vm = this;
       vm.type = 'create';
 
       vm.soundCloud = {};
+      vm.soundCloudWidget;
       vm.musicProviders = [
         { name: 'SoundCloud', icon: 'fa-soundcloud' },
         { name: 'Spotify', icon: 'fa-spotify' },
@@ -47,8 +49,8 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
       $scope.filterByName = function(name) {
           return function(provider) {
               return provider.name != name;
-          }
-      }
+          };
+      };
 
       vm.setMusicProvider = function(provider) {
         vm.currentMusicProvider = provider;
@@ -73,12 +75,21 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
       vm.searchTracks = function(term) {
         SoundCloud.searchTracks(term)
           .then(function(results) {
-            console.log(results);
+            console.log('Search results: ', results);
             vm.soundCloud.tracks = results;
             $scope.$apply();
           }, function(error) {
             console.log("No tracks found matching that search term!");
             console.log(error);
+          });
+      };
+
+      vm.playTrack = function(trackUrl) {
+        SoundCloud.playTrack(trackUrl)
+          .then(function(oEmbed) {
+            console.log('oEmbed response: ', oEmbed);
+            vm.soundCloudWidget = $sce.trustAsHtml(oEmbed.html);
+            $scope.$apply();
           });
       };
 

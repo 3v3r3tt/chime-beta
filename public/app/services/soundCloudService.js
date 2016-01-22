@@ -21,6 +21,15 @@ angular.module('soundCloudService', [])
         });
       };
 
+			soundCloudFactory.playTrack = function(url) {
+				return SC.oEmbed(url, {
+					auto_play: true,
+					maxheight: '70px',
+					show_comments: false,
+					color: '00ECF2' }
+				);
+			};
+
       soundCloudFactory.authenticate = function authenticate() {
         // initiate authentication popup
         return SC.connect(function() {

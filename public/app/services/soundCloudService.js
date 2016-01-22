@@ -4,8 +4,7 @@ angular.module('soundCloudService', [])
 		function($location) {
       var CLIENT_ID = '09552849399f3a58cd8b85d8c5b1218d';
       var BASE_URL = $location.protocol() + "://" + $location.host();
-			console.log($location.port())
-			if ($location.port()) { BASE_URL += ':' + $location.port() }
+			if ($location.port() == '8080') { BASE_URL += ':' + $location.port() }
 			console.log('BASE_URL: ' + BASE_URL);
       var soundCloudFactory = {};
 

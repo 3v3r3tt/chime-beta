@@ -14,7 +14,7 @@
 	        <h4><i class="fa fa-lg" ng-class="chime.currentMusicProvider.icon"></i> {{chime.currentMusicProvider.name}} <span class="caret"></h4></span>
 	      </button>
 	      <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
-					<li ng-click="chime.setMusicProvider(provider)" ng-repeat="provider in chime.musicProviders" role="menuitem">
+					<li ng-click="chime.setMusicProvider(provider)" ng-repeat="provider in chime.musicProviders | filter: filterByName(chime.currentMusicProvider.name)" role="menuitem">
 						<a href="#">{{provider.name}}</a>
 					</li>
 	      </ul>

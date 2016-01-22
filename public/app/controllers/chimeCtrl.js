@@ -44,6 +44,12 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
       ];
       vm.currentMusicProvider = vm.musicProviders[0];
 
+      $scope.filterByName = function(name) {
+          return function(provider) {
+              return provider.name != name;
+          }
+      }
+
       vm.setMusicProvider = function(provider) {
         vm.currentMusicProvider = provider;
       };

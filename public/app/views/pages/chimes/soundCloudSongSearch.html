@@ -1,0 +1,52 @@
+<div class="panel-body">
+  <a  ng-click="authenticateSoundCloud()" class="btn btn-warning btn-xs pull-left">
+    <i class="fa fa-key"></i> Authenticate
+  </a>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <form class="form-group" ng-submit="searchTracks(soundCloudSearchInput)">
+        <label for="soundCloudSearchInput">Find a track</label>
+        <div class="input-group">
+          <input ng-model="soundCloudSearchInput" type="text" class="form-control" id="soundCloudSearchInput" placeholder="Type here to search SoundCloud...">
+          <span class="input-group-btn">
+            <button ng-click="searchTracks(soundCloudSearchInput)" class="btn btn-primary" type="button">Search</button>
+          </span>
+        </div>
+      </form>
+      <div class="form-group results-table">
+        <label for="soundCloudSearchInput">Results</label>
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th class="col-xs-2">Title</th>
+              <th class="col-xs-2">User</th>
+              <th class="col-xs-2">Image</th>
+              <th class="col-xs-5">Waveform</th>
+              <th class="col-xs-1"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="track in soundCloud.tracks">
+              <td ng-bind="track.title"></td>
+              <td ng-bind="track.user.username"></td>
+              <td><img type="text" src="{{track.user.avatar_url}}"></td>
+              <td><img class="waveform" src="{{track.waveform_url}}"></td>
+              <td>
+                <a  ng-click="playTrack(track.permalink_url)" class="btn btn-default btn-sm col-xs-12">
+                  <i class="fa fa-play"></i> Play
+                </a>
+                <a class="btn btn-primary btn-sm col-xs-12">
+                  <i class="fa fa-plus"></i> Select
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="panel-footer">
+  <div ng-bind-html="soundCloudWidget"></div >
+</div>

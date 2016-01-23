@@ -1,0 +1,91 @@
+<div class="panel-body">
+  <div class="row">
+    <div class="col-xs-12">
+      <form class="form-group" ng-submit="searchTracks(spotifySearchInput)">
+        <label for="spotifySearchInput">Find a track</label>
+        <div class="input-group">
+          <input ng-model="spotifySearchInput" type="text" class="form-control" id="spotifySearchInput" placeholder="Type here to search Spotify...">
+          <span class="input-group-btn">
+            <button ng-click="searchTracks(spotifySearchInput)" class="btn btn-default" type="button">Search</button>
+          </span>
+        </div>
+      </form>
+      <div class="form-group results-table">
+        <label for="spotifySearchInput">Results</label>
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th class="col-xs-2">Title</th>
+              <th class="col-xs-2">User</th>
+              <th class="col-xs-2">Image</th>
+              <th class="col-xs-5">Waveform</th>
+              <th class="col-xs-1"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="track in spotify.tracks">
+              <td ng-bind="track.title"></td>
+              <td ng-bind="track.user.username"></td>
+              <td><img type="text" src="{{track.user.avatar_url}}"></td>
+              <td><img class="waveform" src="{{track.waveform_url}}"></td>
+              <td>
+                <a  ng-click="playTrack(track.permalink_url)" class="btn btn-default btn-sm col-xs-12">
+                  <i class="fa fa-play"></i> Play
+                </a>
+                <a class="btn btn-primary btn-sm col-xs-12">
+                  <i class="fa fa-plus"></i> Select
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="panel-footer">
+  <div ng-bind-html="spotifyWidget"></div >
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <form class="form-group" ng-submit="chime.searchTracks(chime.spotifySearchInput)">
+      <label for="spotifySearchInput">Find a track</label>
+      <div class="input-group">
+        <input ng-model="chime.spotifySearchInput" type="text" class="form-control" id="spotifySearchInput" placeholder="Type here to search Spotify...">
+        <span class="input-group-btn">
+          <button ng-click="chime.searchTracks(chime.spotifySearchInput)" class="btn btn-default" type="button">Search</button>
+        </span>
+      </div>
+    </form>
+    <div class="form-group results-table">
+      <label for="spotifySearchInput">Results</label>
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th class="col-xs-2">Title</th>
+            <th class="col-xs-2">User</th>
+            <th class="col-xs-2">Image</th>
+            <th class="col-xs-5">Waveform</th>
+            <th class="col-xs-1"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="track in chime.spotify.tracks">
+            <td ng-bind="track.title"></td>
+            <td ng-bind="track.user.username"></td>
+            <td><img type="text" src="{{track.user.avatar_url}}"></td>
+            <td><img class="waveform" src="{{track.waveform_url}}"></td>
+            <td>
+              <a  ng-click="chime.playTrack(track.permalink_url)" class="btn btn-default btn-sm col-xs-12">
+                <i class="fa fa-play"></i> Play
+              </a>
+              <a  ng-click="chime.playTrack(track.permalink_url)" class="btn btn-primary btn-sm col-xs-12">
+                <i class="fa fa-plus"></i> Select
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

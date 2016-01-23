@@ -28,21 +28,17 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
 
   .controller('chimeCreateController', [
     'Chime',
-    'SoundCloud',
     '$scope',
-    '$sce',
-    function(Chime, SoundCloud, $scope, $sce) {
+    function(Chime, $scope) {
       var vm = this;
       vm.type = 'create';
 
-      vm.soundCloud = {};
-      vm.soundCloudWidget;
       vm.musicProviders = [
-        { name: 'SoundCloud', icon: 'fa-soundcloud' },
-        { name: 'Spotify', icon: 'fa-spotify' },
-        { name: 'Google Play', icon: 'fa-play' },
-        { name: 'Apple Music', icon: 'fa-apple' },
-        { name: 'YouTube', icon: 'fa-youtube-play' },
+        { name: 'SoundCloud', icon: 'fa-soundcloud', value: 'soundCloud' },
+        { name: 'Spotify', icon: 'fa-spotify', value: 'spotify' },
+        { name: 'Google Play', icon: 'fa-play', value: 'googlePlay' },
+        { name: 'Apple Music', icon: 'fa-apple', value: 'appleMusic' },
+        { name: 'YouTube', icon: 'fa-youtube-play', value: 'youTube' },
       ];
       vm.currentMusicProvider = vm.musicProviders[0];
 
@@ -54,43 +50,6 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
 
       vm.setMusicProvider = function(provider) {
         vm.currentMusicProvider = provider;
-      };
-
-      vm.authenticateSoundCloud = function() {
-        SoundCloud.authenticate();
-      };
-
-      vm.getTrack = function(trackId) {
-        SoundCloud.getTrack(trackId)
-          .then(function(track) {
-            vm.soundCloud.track = track;
-            console.log(vm.soundCloud);
-            $scope.$apply();
-          }, function(error) {
-            console.log("Track with that id does not exist: ");
-            console.log(error);
-          });
-      };
-
-      vm.searchTracks = function(term) {
-        SoundCloud.searchTracks(term)
-          .then(function(results) {
-            console.log('Search results: ', results);
-            vm.soundCloud.tracks = results;
-            $scope.$apply();
-          }, function(error) {
-            console.log("No tracks found matching that search term!");
-            console.log(error);
-          });
-      };
-
-      vm.playTrack = function(trackUrl) {
-        SoundCloud.playTrack(trackUrl)
-          .then(function(oEmbed) {
-            console.log('oEmbed response: ', oEmbed);
-            vm.soundCloudWidget = $sce.trustAsHtml(oEmbed.html);
-            $scope.$apply();
-          });
       };
 
       vm.saveChime = function() {
@@ -129,6 +88,80 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
             vm.message = data.message;
           });
       };
+    }
+  ])
 
+  .directive('soundCloudSongSearch', [
+    'SoundCloud',
+    '$sce',
+    function(SoundCloud, $sce) {
+      return{
+        restrict: 'E',
+        scope: {
+          chime: '=',
+        },
+        templateUrl: 'app/views/pages/chimes/soundCloudSongSearch.html',
+        link: function(scope, element, attrs) {
+          scope.soundCloud = {};
+          scope.soundCloudSearchInput = '';
+
+          scope.searchTracks = function(term) {
+            SoundCloud.searchTracks(term)
+              .then(function(results) {
+                console.log('Search results: ', results);
+                scope.soundCloud.tracks = results;
+                scope.$apply();
+              }, function(error) {
+                console.log("No tracks found matching that search term: ", error);
+              });
+          };
+
+          scope.playTrack = function(trackUrl) {
+            SoundCloud.playTrack(trackUrl)
+              .then(function(oEmbed) {
+                console.log('oEmbed response: ', oEmbed);
+                scope.soundCloudWidget = $sce.trustAsHtml(oEmbed.html);
+                scope.$apply();
+              });
+          };
+
+          scope.authenticateSoundCloud = function() {
+            SoundCloud.authenticate();
+          };
+        }
+      };
+    }
+  ])
+
+  .directive('spotifySongSearch', [
+    '$sce',
+    function($sce) {
+      return{
+        restrict: 'E',
+        scope: {
+          chime: '=',
+        },
+        templateUrl: 'app/views/pages/chimes/spotifySongSearch.html',
+        link: function(scope, element, attrs) {
+          scope.spotify = {};
+          scope.spotifySearchInput = '';
+
+          scope.searchTracks = function(term) {
+            console.log("Search Spotify tracks....");
+            // Spotify.searchTracks(term)
+            //   .then(function(results) {
+            //     console.log('Search results: ', results);
+            //     scope.spotify.tracks = results;
+            //     scope.$apply();
+            //   }, function(error) {
+            //     console.log("No tracks found matching that search term: ", error);
+            //   });
+          };
+
+          scope.playTrack = function(trackUrl) {
+            console.log('Play Spotify track...');
+          };
+        }
+      };
     }
   ]);

@@ -30,7 +30,7 @@
             <tr ng-repeat="track in soundCloud.tracks">
               <td ng-bind="track.title"></td>
               <td ng-bind="track.user.username"></td>
-              <td><img type="text" src="{{track.user.avatar_url}}"></td>
+              <td><img src="{{track.artwork_url || track.user.avatar_url}}"></td>
               <td><img class="waveform" src="{{track.waveform_url}}"></td>
               <td>
                 <a ng-click="playTrack(track.permalink_url)" class="btn btn-default btn-sm col-xs-12">

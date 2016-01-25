@@ -23,14 +23,45 @@
 	</div>
 	<div ng-if="chime.selectedTrack">
 		<div class="panel-body">
-
-		  <div class="row">
-		    <div class="col-xs-12">
-		      <div class="results-table">
-						<p>{{chime.selectedTrack | json}}</p>
-		      </div>
+		  <div class="row results-tabls">
+				<div class="col-xs-3">
+					<img width="200px" src="{{chime.selectedTrack.artwork_url || chime.selectedTrack.user.avatar_url}}">
+				</div>
+				<div class="col-xs-9">
+					<form class="form-horizontal">
+					  <div class="form-group">
+					    <label for="inputEmail3" class="col-sm-2 control-label">Title</label>
+					    <div class="col-sm-10">
+					      <input type="text" class="form-control" ng-model="chime.selectedTrack.title" placeholder="Title">
+					    </div>
+					  </div>
+						<div class="form-group">
+					    <label for="inputPassword3" class="col-sm-2 control-label">Description</label>
+					    <div class="col-sm-10">
+					      <input type="text" class="form-control" ng-model="chime.selectedTrack.description" placeholder="Label">
+					    </div>
+					  </div>
+						<div class="form-group">
+					    <label for="inputPassword3" class="col-sm-2 control-label">Genre</label>
+					    <div class="col-sm-10">
+					      <input type="text" class="form-control" ng-model="chime.selectedTrack.genre" placeholder="Genre">
+					    </div>
+					  </div>
+						<div class="form-group">
+					    <label for="inputPassword3" class="col-sm-2 control-label">Label</label>
+					    <div class="col-sm-10">
+					      <input type="text" class="form-control" ng-model="chime.selectedTrack.label_name" placeholder="Label">
+					    </div>
+					  </div>
+					</form>
 		    </div>
 		  </div>
+			<div class="row">
+				<div>
+					<img class="waveform" src="{{chime.selectedTrack.waveform_url}}">
+				</div>
+			</div>
+			<p>{{chime.selectedTrack | json}}</p>
 		</div>
 		<div class="panel-footer">
 		  <div ng-bind-html="soundCloudWidget"></div >

@@ -17,8 +17,25 @@
     </div>
   </div>
 
-	<sound-cloud-song-search ng-if="chime.currentMusicProvider.value == 'soundCloud'" chime="chime"></sound-cloud-song-search>
-	<spotify-song-search ng-if="chime.currentMusicProvider.value == 'spotify'" chime="chime"></spotify-song-search>
+	<div ng-if="!chime.selectedTrack">
+		<sound-cloud-song-search ng-if="chime.currentMusicProvider.value == 'soundCloud'" chime="chime"></sound-cloud-song-search>
+		<spotify-song-search ng-if="chime.currentMusicProvider.value == 'spotify'" chime="chime"></spotify-song-search>
+	</div>
+	<div ng-if="chime.selectedTrack">
+		<div class="panel-body">
+
+		  <div class="row">
+		    <div class="col-xs-12">
+		      <div class="results-table">
+						<p>{{chime.selectedTrack | json}}</p>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<div class="panel-footer">
+		  <div ng-bind-html="soundCloudWidget"></div >
+		</div>
+	</div>
 
 </div>
 <!--

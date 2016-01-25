@@ -117,12 +117,17 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
           };
 
           scope.playTrack = function(trackUrl) {
+            console.log("play track");
             SoundCloud.playTrack(trackUrl)
               .then(function(oEmbed) {
                 console.log('oEmbed response: ', oEmbed);
                 scope.soundCloudWidget = $sce.trustAsHtml(oEmbed.html);
                 scope.$apply();
               });
+          };
+
+          scope.selectTrack = function(track) {
+            scope.chime.selectedTrack = track;
           };
 
           scope.authenticateSoundCloud = function() {

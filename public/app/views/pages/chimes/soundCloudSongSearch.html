@@ -33,10 +33,10 @@
               <td><img type="text" src="{{track.user.avatar_url}}"></td>
               <td><img class="waveform" src="{{track.waveform_url}}"></td>
               <td>
-                <a  ng-click="playTrack(track.permalink_url)" class="btn btn-default btn-sm col-xs-12">
+                <a ng-click="playTrack(track.permalink_url)" class="btn btn-default btn-sm col-xs-12">
                   <i class="fa fa-play"></i> Play
                 </a>
-                <a class="btn btn-primary btn-sm col-xs-12">
+                <a ng-click="selectTrack(track)" class="btn btn-primary btn-sm col-xs-12">
                   <i class="fa fa-plus"></i> Select
                 </a>
               </td>

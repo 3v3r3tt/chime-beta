@@ -11,6 +11,8 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.14.2",
     "express": "~4.10.3",
+    "express-session": "^1.13.0",
+    "grant-express": "^3.5.5",
     "jsonwebtoken": "^5.5.4",
     "mongoose": "~4.1.12",
     "morgan": "~1.5.0"

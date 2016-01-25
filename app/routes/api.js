@@ -14,7 +14,6 @@ module.exports = function(app, express) {
 
 	// route to authenticate a user (POST http://localhost:8080/api/authenticate)
 	apiRouter.post('/authenticate', function(req, res) {
-
 	  // find the user
 	  User.findOne({
 	    username: req.body.username
@@ -96,6 +95,16 @@ module.exports = function(app, express) {
 	apiRouter.get('/', function(req, res) {
 		res.json({ message: 'Welcome to the Chime web API!' });
 	});
+
+
+	apiRouter.route('/handle_spotify_callback')
+		.get(function(req, res) {
+			console.log(req.query)
+		  res.end(JSON.stringify(req.query, null, 2))
+		});
+
+
+
 
 	// on routes that end in /users
 	// ----------------------------------------------------

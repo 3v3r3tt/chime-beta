@@ -1,0 +1,16 @@
+{
+  "server": {
+    "protocol": "http",
+    "host": "localhost:8080"
+  },
+  "soundcloud": {
+    "key": "09552849399f3a58cd8b85d8c5b1218d",
+    "secret": "a06643fc04e2521b35b67be1de38d96a",
+    "callback": "/callback"
+  },
+  "spotify": {
+    "key": "d1f4f77435b3467eaffe16ec5188e87d",
+    "secret": "95be7eece7a14591a1911124f85f906c",
+    "callback": "/handle_spotify_callback"
+  }
+}

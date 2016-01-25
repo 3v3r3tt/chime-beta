@@ -3,18 +3,31 @@
 
 // CALL THE PACKAGES --------------------
 var express    = require('express');
-var app        = express();
+var session    = require('express-session');
 var bodyParser = require('body-parser');
 var morgan     = require('morgan');
 var mongoose   = require('mongoose');
 var config 	   = require('./config');
-var path 	   = require('path');
+var path 	     = require('path');
+
+var Grant = require('grant-express');
+var grant = new Grant(require('./config.json'));
+
+var app = express();
 
 // APP CONFIGURATION ==================
 // ====================================
 // use body parser so we can grab information from POST requests
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(session({
+	secret: config.secret,
+	resave: false,
+	saveUninitialized: false
+}))
+app.use(morgan('dev'));
+app.use(grant)
+
 
 // configure our app to handle CORS requests
 app.use(function(req, res, next) {

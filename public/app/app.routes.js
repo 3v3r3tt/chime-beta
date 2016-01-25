@@ -19,6 +19,12 @@ angular.module('app.routes', ['ngRoute'])
 				controllerAs: 'login'
 			})
 
+			.when('/handle_spotify_callback', {
+				templateUrl: 'app/views/pages/connect/spotifyCallback.html',
+				controller: 'mainController',
+				controllerAs: 'main'
+			})
+
 			// show all users
 			.when('/users', {
 				templateUrl: 'app/views/pages/users/all.html',

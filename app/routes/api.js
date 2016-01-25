@@ -54,9 +54,7 @@ module.exports = function(app, express) {
 	          token: token
 	        });
 	      }
-
 	    }
-
 	  });
 	});
 
@@ -77,7 +75,6 @@ module.exports = function(app, express) {
 	      } else {
 	        // if everything is good, save to request for use in other routes
 	        req.decoded = decoded;
-
 	        next(); // make sure we go to the next routes and don't stop here
 	      }
 	    });
@@ -95,16 +92,6 @@ module.exports = function(app, express) {
 	apiRouter.get('/', function(req, res) {
 		res.json({ message: 'Welcome to the Chime web API!' });
 	});
-
-
-	apiRouter.route('/handle_spotify_callback')
-		.get(function(req, res) {
-			console.log(req.query)
-		  res.end(JSON.stringify(req.query, null, 2))
-		});
-
-
-
 
 	// on routes that end in /users
 	// ----------------------------------------------------
@@ -299,6 +286,20 @@ module.exports = function(app, express) {
 				if (err) res.send(err);
 				res.json({ message: 'Successfully deleted!' })
 			});
+		});
+
+	// routes to handle music provider authentication
+	// ---
+	apiRouter.route('/handle_spotify_callback')
+		.get(function(req, res) {
+			console.log(req.query)
+		  res.end(JSON.stringify(req.query, null, 2))
+		});
+
+	apiRouter.route('/handle_soundcloud_callback')
+		.get(function(req, res) {
+			console.log(req.query)
+		  res.end(JSON.stringify(req.query, null, 2))
 		});
 
 	return apiRouter;

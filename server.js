@@ -1,6 +1,3 @@
-// BASE SETUP
-// ======================================
-
 // CALL THE PACKAGES --------------------
 var express    = require('express');
 var session    = require('express-session');
@@ -9,10 +6,9 @@ var morgan     = require('morgan');
 var mongoose   = require('mongoose');
 var config 	   = require('./config');
 var path 	     = require('path');
+var Grant 		 = require('grant-express');
 
-var Grant = require('grant-express');
 var grant = new Grant(require('./config.json'));
-
 var app = express();
 
 // APP CONFIGURATION ==================
@@ -51,13 +47,15 @@ app.use(express.static(__dirname + '/public'));
 // ====================================
 
 // API ROUTES ------------------------
+// used for routes requiring authentication
 var apiRoutes = require('./app/routes/api')(app, express);
 app.use('/api', apiRoutes);
+
+// used for public routes
 var publicRoutes = require('./app/routes/public')(app, express);
 app.use('/public', publicRoutes);
 
 // MAIN CATCHALL ROUTE ---------------
-// SEND USERS TO FRONTEND ------------
 // has to be registered after API ROUTES
 app.get('*', function(req, res) {
 	res.sendFile(path.join(__dirname + '/public/app/views/index.html'));

@@ -1,73 +1,90 @@
-<div class="page-header">
+<!-- <div class="page-header">
 	<h1 ng-if="chime.type == 'create'">Create Chime</h1>
 	<h1 ng-if="chime.type == 'edit'">Edit Chime</h1>
-</div>
+</div> -->
 
 <div class="panel panel-default">
   <div class="panel-heading">
-		<div class="btn-group" uib-dropdown is-open="status.isopen">
-      <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
-        <h4><i class="fa fa-lg" ng-class="chime.currentMusicProvider.icon"></i> {{chime.currentMusicProvider.name}} <span class="caret"></h4></span>
-      </button>
-      <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
-				<li ng-click="chime.setMusicProvider(provider)" ng-repeat="provider in chime.musicProviders | filter: filterByName(chime.currentMusicProvider.name)" role="menuitem">
-					<a href="#">{{provider.name}}</a>
-				</li>
-      </ul>
-    </div>
+		<div ng-hide="chime.selectedTrack">
+			<div class="col-xs-3">
+				<div class="btn-group" uib-dropdown is-open="status.isopen">
+		      <button type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+		        <h4><i class="fa fa-lg" ng-class="chime.currentMusicProvider.icon"></i> {{chime.currentMusicProvider.name}} <span class="caret"></h4></span>
+		      </button>
+		      <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+						<li ng-click="chime.setMusicProvider(provider)" ng-repeat="provider in chime.musicProviders | filter: filterByName(chime.currentMusicProvider.name)" role="menuitem">
+							<a href="#">{{provider.name}}</a>
+						</li>
+		      </ul>
+		    </div>
+			</div>
+			<div class="col-xs-6 text-center">
+				<h1>Select Song</h1>
+			</div>
+		</div>
+
+		<div ng-show="chime.selectedTrack">
+			<div class="col-xs-3">
+				<button ng-click="chime.clearSelectedTrack()" type="button" class="btn btn-default">
+					<h4><i class="fa fa-lg fa-arrow-left"></i> Back</h4>
+				</button>
+			</div>
+			<div class="col-xs-6 text-center">
+				<h1>Create Chime</h1>
+			</div>
+		</div>
   </div>
 
-	<div ng-if="!chime.selectedTrack">
-		<sound-cloud-song-search ng-if="chime.currentMusicProvider.value == 'soundCloud'" chime="chime"></sound-cloud-song-search>
-		<spotify-song-search ng-if="chime.currentMusicProvider.value == 'spotify'" chime="chime"></spotify-song-search>
-	</div>
-	<div ng-if="chime.selectedTrack">
-		<div class="panel-body">
-		  <div class="row results-tabls">
-				<div class="col-xs-3">
-					<img width="200px" src="{{chime.selectedTrack.artwork_url || chime.selectedTrack.user.avatar_url}}">
-				</div>
-				<div class="col-xs-9">
-					<form class="form-horizontal">
-					  <div class="form-group">
-					    <label for="inputEmail3" class="col-sm-2 control-label">Title</label>
-					    <div class="col-sm-10">
-					      <input type="text" class="form-control" ng-model="chime.selectedTrack.title" placeholder="Title">
-					    </div>
-					  </div>
-						<div class="form-group">
-					    <label for="inputPassword3" class="col-sm-2 control-label">Description</label>
-					    <div class="col-sm-10">
-					      <input type="text" class="form-control" ng-model="chime.selectedTrack.description" placeholder="Label">
-					    </div>
-					  </div>
-						<div class="form-group">
-					    <label for="inputPassword3" class="col-sm-2 control-label">Genre</label>
-					    <div class="col-sm-10">
-					      <input type="text" class="form-control" ng-model="chime.selectedTrack.genre" placeholder="Genre">
-					    </div>
-					  </div>
-						<div class="form-group">
-					    <label for="inputPassword3" class="col-sm-2 control-label">Label</label>
-					    <div class="col-sm-10">
-					      <input type="text" class="form-control" ng-model="chime.selectedTrack.label_name" placeholder="Label">
-					    </div>
-					  </div>
-					</form>
-		    </div>
-		  </div>
+	<div class="panel-body">
+		<div ng-hide="chime.selectedTrack">
+			<sound-cloud-song-search ng-if="chime.currentMusicProvider.value == 'soundCloud'" chime="chime"></sound-cloud-song-search>
+			<spotify-song-search ng-if="chime.currentMusicProvider.value == 'spotify'" chime="chime"></spotify-song-search>
+		</div>
+		<div ng-show="chime.selectedTrack">
 			<div class="row">
-				<div>
+				<div class="col-xs-4">
+					<div class="img-responsive center-block">
+						<img width="250px" class="margin-left-20" src="{{chime.selectedTrack.artwork_url || chime.selectedTrack.user.avatar_url}}">
+					</div>
+				</div>
+				<div class="col-xs-8">
+					<form class="form-horizontal">
+						<label class="col-xs-2 control-label">Title: </label>
+						<label class="col-xs-10 control-description">
+							<p ng-bind="chime.selectedTrack.title"></p>
+						</label>
+						<label class="col-xs-2 control-label">Description: </label>
+						<label class="col-xs-10 control-description">
+							<p class="truncate-with-ellipsis" ng-bind="chime.selectedTrack.description"></p>
+						</label>
+						<label class="col-xs-2 control-label">Genre: </label>
+						<label class="col-xs-10 control-description">
+							<p ng-bind="chime.selectedTrack.genre"></p>
+						</label>
+						<label class="col-xs-2 control-label">Label: </label>
+						<label class="col-xs-10 control-description">
+							<p ng-bind="chime.selectedTrack.label_name"></p>
+						</label>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">Tags: </label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" ng-model="chime.selectedTrack.tags" placeholder="Tags">
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
 					<img class="waveform" src="{{chime.selectedTrack.waveform_url}}">
 				</div>
 			</div>
-			<p>{{chime.selectedTrack | json}}</p>
-		</div>
-		<div class="panel-footer">
-		  <div ng-bind-html="soundCloudWidget"></div >
 		</div>
 	</div>
 
+	<div class="panel-footer">
+	  <div ng-bind-html="chime.soundCloudWidget"></div >
+	</div>
 </div>
 <!--
 <div class="jumbotron text-center">

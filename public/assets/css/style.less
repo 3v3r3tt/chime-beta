@@ -53,9 +53,37 @@ p{
 	padding: 20px;
 }
 
+.margin-left-20 {
+	margin-left: 20px;
+}
+
+.panel-heading {
+	height: 80px;
+}
+
+.panel-body {
+	height: 470px;
+}
+
 .results-table{
-	height: 300px;
+	height: 350px;
 	overflow: auto;
+}
+
+.control-description {
+    padding-top: 7px;
+    margin-bottom: 0;
+    text-align: left;
+}
+
+.truncate-with-ellipsis {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-box-orient: vertical;
+   -webkit-line-clamp: 3; /* number of lines to show */
+   line-height: 25px;        /* fallback */
+   max-height: 75px;       /* fallback */
 }
 
 /* HEADER
@@ -75,8 +103,9 @@ footer p {
 }
 
 .waveform {
-	background-color: @primary;
-	width: 400px;
+	background-color: @secondary;
+	width: 100%;
+	margin-top: 10px;
 }
 
 .panel-footer {

@@ -52,6 +52,10 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
         vm.currentMusicProvider = provider;
       };
 
+      vm.clearSelectedTrack = function() {
+        delete vm.selectedTrack;
+      };
+
       vm.saveChime = function() {
         vm.processing = true;
         vm.message = '';
@@ -116,17 +120,18 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
               });
           };
 
-          scope.playTrack = function(trackUrl) {
-            console.log("play track");
-            SoundCloud.playTrack(trackUrl)
+          scope.playTrack = function(track) {
+            SoundCloud.playTrack(track.permalink_url)
               .then(function(oEmbed) {
                 console.log('oEmbed response: ', oEmbed);
-                scope.soundCloudWidget = $sce.trustAsHtml(oEmbed.html);
+                scope.chime.streamingTrack = track;
+                scope.chime.soundCloudWidget = $sce.trustAsHtml(oEmbed.html);
                 scope.$apply();
               });
           };
 
           scope.selectTrack = function(track) {
+            if(track !== scope.chime.streamingTrack) { scope.playTrack(track) };
             scope.chime.selectedTrack = track;
           };
 
@@ -150,22 +155,6 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
         link: function(scope, element, attrs) {
           scope.spotify = {};
           scope.spotifySearchInput = '';
-
-          scope.searchTracks = function(term) {
-            console.log("Search Spotify tracks....");
-            // Spotify.searchTracks(term)
-            //   .then(function(results) {
-            //     console.log('Search results: ', results);
-            //     scope.spotify.tracks = results;
-            //     scope.$apply();
-            //   }, function(error) {
-            //     console.log("No tracks found matching that search term: ", error);
-            //   });
-          };
-
-          scope.playTrack = function(trackUrl) {
-            console.log('Play Spotify track...');
-          };
         }
       };
     }

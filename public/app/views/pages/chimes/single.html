@@ -76,7 +76,27 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
-					<img class="waveform" src="{{chime.selectedTrack.waveform_url}}">
+					<img class="selectable-waveform" src="{{chime.selectedTrack.waveform_url}}">
+					<div id="slider-container">
+						<input class="start-slider" ng-model="chime.startTime" type="range" min="0" max="{{chime.selectedTrack.duration}}">
+						<input class="end-slider" ng-style="{'left': chime.leftOffset, 'width': chime.widthOffset}" ng-if="chime.startTimeSet" ng-model="chime.endTime" type="range" min="{{chime.startTime}}" max="{{chime.selectedTrack.duration}}">
+					</div>
+				</div>
+				<div class="col-xs-12">
+					<div class="input-group">
+						<p>Start Time: {{chime.startTime + ' ms'}}</p>
+					  <span class="input-group-btn">
+			      	<button type="button" ng-hide="chime.startTimeSet" ng-click="chime.setStartTime()" class="btn btn-primary btn-xs pull-left">Set Start Time</button>
+							<button type="button" ng-show="chime.startTimeSet" ng-click="chime.clearStartTime()" class="btn btn-warning btn-xs">Clear Start Time</button>
+					  </span>
+					</div>
+					<div ng-if="chime.startTimeSet" class="input-group">
+					  <p>End Time: {{chime.endTime + ' ms'}}</p>
+						<span class="input-group-btn">
+ 							<button type="button" ng-hide="chime.endTimeSet" ng-click="chime.setEndTime()" class="btn btn-primary btn-xs">Set End Time</button>
+							<button type="button" ng-show="chime.endTimeSet" ng-click="chime.clearEndTime()" class="btn btn-warning btn-xs">Clear End Time</button>
+ 					  </span>
+					</div>
 				</div>
 			</div>
 		</div>

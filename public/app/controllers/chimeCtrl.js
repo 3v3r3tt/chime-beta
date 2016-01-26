@@ -56,6 +56,31 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
         delete vm.selectedTrack;
       };
 
+      vm.setStartTime = function() {
+        vm.startTimeSet = true;
+        var startTime = +vm.startTime;
+        var duration = vm.selectedTrack.duration;
+        var width = angular.element(document.getElementById('slider-container'))[0].clientWidth;
+        vm.leftOffset = startTime/duration*width;
+        vm.widthOffset = width - vm.leftOffset;
+      }
+
+      vm.setEndTime = function() {
+        vm.endTimeSet = true;
+      }
+
+      vm.clearEndTime = function() {
+        vm.endTimeSet = false;
+        vm.endTime = vm.startTime;
+      }
+
+      vm.clearStartTime = function() {
+        vm.startTimeSet = false;
+        vm.endTimeSet = false;
+        vm.startTime = 0;
+        vm.endTime = 0;
+      }
+
       vm.saveChime = function() {
         vm.processing = true;
         vm.message = '';

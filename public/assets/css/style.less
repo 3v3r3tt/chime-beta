@@ -62,11 +62,11 @@ p{
 }
 
 .panel-body {
-	height: 470px;
+	height: 480px;
 }
 
 .results-table{
-	height: 350px;
+	height: 360px;
 	overflow: auto;
 }
 
@@ -84,6 +84,23 @@ p{
    -webkit-line-clamp: 3; /* number of lines to show */
    line-height: 25px;        /* fallback */
    max-height: 75px;       /* fallback */
+}
+
+#slider-container{
+	width: 100%;
+	position: relative;
+}
+
+.start-slider {
+	position: absolute;
+  z-index: 1;
+	bottom: 62px;
+}
+
+.end-slider {
+  position: absolute;
+  z-index: 2;
+  bottom: 62px;
 }
 
 /* HEADER
@@ -105,6 +122,14 @@ footer p {
 .waveform {
 	background-color: @secondary;
 	width: 100%;
+	max-height: 150px;
+	margin-top: 10px;
+}
+
+.selectable-waveform {
+	background-color: @secondary;
+	width: 100%;
+	height: 140px;
 	margin-top: 10px;
 }
 

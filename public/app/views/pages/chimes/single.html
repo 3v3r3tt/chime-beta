@@ -76,6 +76,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
+					<div ng-if="chime.startTimeSet" class="selectable-waveform-overlay" ng-style="{'left': chime.leftOffset + 15, 'width': chime.chimeWidth}"></div>
 					<img class="selectable-waveform" src="{{chime.selectedTrack.waveform_url}}">
 					<div id="slider-container">
 						<input class="start-slider" ng-model="chime.startTime" type="range" min="0" max="{{chime.selectedTrack.duration}}">

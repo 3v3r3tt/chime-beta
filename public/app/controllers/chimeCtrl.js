@@ -63,23 +63,29 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
         var width = angular.element(document.getElementById('slider-container'))[0].clientWidth;
         vm.leftOffset = startTime/duration*width;
         vm.widthOffset = width - vm.leftOffset;
-      }
+      };
 
       vm.setEndTime = function() {
         vm.endTimeSet = true;
-      }
+        var startTime = +vm.startTime;
+        var endTime = +vm.endTime;
+        var duration = vm.selectedTrack.duration;
+        var width = angular.element(document.getElementById('slider-container'))[0].clientWidth;
+        vm.chimeWidth = (endTime - startTime)*width/duration;
+      };
 
       vm.clearEndTime = function() {
         vm.endTimeSet = false;
         vm.endTime = vm.startTime;
-      }
+        vm.chimeWidth = 0;
+      };
 
       vm.clearStartTime = function() {
         vm.startTimeSet = false;
         vm.endTimeSet = false;
         vm.startTime = 0;
         vm.endTime = 0;
-      }
+      };
 
       vm.saveChime = function() {
         vm.processing = true;
@@ -156,7 +162,7 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
           };
 
           scope.selectTrack = function(track) {
-            if(track !== scope.chime.streamingTrack) { scope.playTrack(track) };
+            if(track !== scope.chime.streamingTrack) { scope.playTrack(track); }
             scope.chime.selectedTrack = track;
           };
 

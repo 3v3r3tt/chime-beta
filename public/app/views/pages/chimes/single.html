@@ -53,6 +53,10 @@
 						<label class="col-xs-10 control-description">
 							<p ng-bind="chime.selectedTrack.title"></p>
 						</label>
+						<label class="col-xs-2 control-label">Author: </label>
+						<label class="col-xs-10 control-description">
+							<p ng-bind="chime.selectedTrack.user.username"></p>
+						</label>
 						<label class="col-xs-2 control-label">Description: </label>
 						<label class="col-xs-10 control-description">
 							<p class="truncate-with-ellipsis" ng-bind="chime.selectedTrack.description"></p>
@@ -60,10 +64,6 @@
 						<label class="col-xs-2 control-label">Genre: </label>
 						<label class="col-xs-10 control-description">
 							<p ng-bind="chime.selectedTrack.genre"></p>
-						</label>
-						<label class="col-xs-2 control-label">Label: </label>
-						<label class="col-xs-10 control-description">
-							<p ng-bind="chime.selectedTrack.label_name"></p>
 						</label>
 						<div class="form-group">
 							<label for="inputPassword3" class="col-sm-2 control-label">Tags: </label>
@@ -84,11 +84,16 @@
 					</div>
 				</div>
 				<div class="col-xs-12">
-					<div class="input-group">
-						<p>Start Time: {{chime.startTime + ' ms'}}</p>
-					  <span class="input-group-btn">
-			      	<button type="button" ng-hide="chime.startTimeSet" ng-click="chime.setStartTime()" class="btn btn-primary btn-xs pull-left">Set Start Time</button>
-							<button type="button" ng-show="chime.startTimeSet" ng-click="chime.clearStartTime()" class="btn btn-warning btn-xs">Clear Start Time</button>
+					<div class="row">
+						<p class="col-xs-4">Start Time: {{chime.startTime + ' ms'}}</p>
+						<span class="col-xs-4 center-block">
+			      	<button ng-show="chime.endTimeSet" ng-click="chime.playSelection()" type="button" class="btn btn-primary btn-md center-block">
+								<i class="fa fa-md fa-play"></i> Play Selection
+							</button>
+					  </span>
+						<span class="col-xs-4">
+			      	<button type="button" ng-hide="chime.startTimeSet" ng-click="chime.setStartTime()" class="btn btn-primary btn-xs pull-right">Set Start Time</button>
+							<button type="button" ng-show="chime.startTimeSet" ng-click="chime.clearStartTime()" class="btn btn-warning btn-xs pull-right">Clear Start Time</button>
 					  </span>
 					</div>
 					<div ng-if="chime.startTimeSet" class="input-group">
@@ -104,7 +109,12 @@
 	</div>
 
 	<div class="panel-footer">
-	  <div ng-bind-html="chime.soundCloudWidget"></div >
+		<!-- <iframe id="soundcloud_widget"
+      src="http://w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/39804767&show_artwork=false&liking=false&sharing=false&auto_play=true"
+      width="420"
+      height="120"
+      frameborder="no"></iframe> -->
+	  <div id="soundcloud_widget" ng-bind-html="chime.soundCloudWidget"></div >
 	</div>
 </div>
 <!--

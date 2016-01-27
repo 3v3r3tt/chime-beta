@@ -64,7 +64,7 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
         var width = angular.element(document.getElementById('slider-container'))[0].clientWidth;
         vm.splicer.leftOffset = startTime/duration*width;
         vm.splicer.widthOffset = width - vm.splicer.leftOffset;
-      }
+      };
 
       vm.clearStartTime = function() {
         vm.splicer.startTimeLocked = false;
@@ -75,18 +75,18 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
 
 
       vm.adjustStartTime = function(startTime) {
-        if (vm.splicer.startTimeLocked || startTime === -1) { return };
+        if (vm.splicer.startTimeLocked || startTime === -1) { return; }
         vm.splicer.startTime = startTime;
         $scope.$apply();
       };
 
       vm.setEndTime = function() {
-        if (vm.splicer.endTimeLocked) { return };
+        if (vm.splicer.endTimeLocked) { return; }
         vm.widget.pause();
         vm.widget.getPosition(function(time) {
           vm.splicer.endTime = time;
           $scope.$apply();
-        })
+        });
       };
 
       vm.lockEndTime = function() {
@@ -102,7 +102,7 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
             vm.widget.pause();
           }
         });
-      }
+      };
 
       vm.clearEndTime = function() {
         vm.widget.unbind('playProgress');
@@ -131,7 +131,7 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
         vm.widget.seekTo(vm.splicer.startTime);
         vm.widget.isPaused(function(val) {
           if (val) { vm.widget.play(); }
-        })
+        });
       };
 
       vm.selectTrack = function(track) {
@@ -141,7 +141,7 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
             vm.bindWidgetActions();
           });
         } else {
-          vm.bindWidgetActions()
+          vm.bindWidgetActions();
         }
       };
 

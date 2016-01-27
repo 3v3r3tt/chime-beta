@@ -13,7 +13,7 @@ angular.module('soundCloudService', [])
 
 			soundCloudFactory.getSC = function() {
 				return SC;
-			}
+			};
 
       soundCloudFactory.getTrack = function(id) {
         return SC.get('/tracks/' + id);

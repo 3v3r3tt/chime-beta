@@ -28,10 +28,14 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
 
   .controller('chimeCreateController', [
     'Chime',
+    'SoundCloud',
     '$scope',
-    function(Chime, $scope) {
+    '$sce',
+    '$q',
+    function(Chime, SoundCloud, $scope, $sce, $q) {
       var vm = this;
       vm.type = 'create';
+      vm.splicer = {};
 
       vm.musicProviders = [
         { name: 'SoundCloud', icon: 'fa-soundcloud', value: 'soundCloud' },
@@ -52,45 +56,122 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
         vm.currentMusicProvider = provider;
       };
 
-      vm.clearSelectedTrack = function() {
-        delete vm.selectedTrack;
-      };
-
-      vm.setStartTime = function() {
-        vm.startTimeSet = true;
-        var startTime = +vm.startTime;
+      vm.lockStartTime = function() {
+        console.log('locking startTime');
+        vm.splicer.startTimeLocked = true;
+        var startTime = +vm.splicer.startTime;
         var duration = vm.selectedTrack.duration;
         var width = angular.element(document.getElementById('slider-container'))[0].clientWidth;
-        vm.leftOffset = startTime/duration*width;
-        vm.widthOffset = width - vm.leftOffset;
+        vm.splicer.leftOffset = startTime/duration*width;
+        vm.splicer.widthOffset = width - vm.splicer.leftOffset;
+      }
+
+      vm.clearStartTime = function() {
+        vm.splicer.startTimeLocked = false;
+        vm.splicer.endTimeLocked = false;
+        vm.splicer.startTime = 0;
+        vm.splicer.endTime = 0;
+      };
+
+
+      vm.adjustStartTime = function(startTime) {
+        if (vm.splicer.startTimeLocked || startTime === -1) { return };
+        vm.splicer.startTime = startTime;
+        $scope.$apply();
       };
 
       vm.setEndTime = function() {
-        vm.endTimeSet = true;
-        var startTime = +vm.startTime;
-        var endTime = +vm.endTime;
+        if (vm.splicer.endTimeLocked) { return };
+        vm.widget.pause();
+        vm.widget.getPosition(function(time) {
+          vm.splicer.endTime = time;
+          $scope.$apply();
+        })
+      };
+
+      vm.lockEndTime = function() {
+        vm.splicer.endTimeLocked = true;
+        var startTime = +vm.splicer.startTime;
+        var endTime = +vm.splicer.endTime;
         var duration = vm.selectedTrack.duration;
         var width = angular.element(document.getElementById('slider-container'))[0].clientWidth;
-        vm.chimeWidth = (endTime - startTime)*width/duration;
-      };
+        vm.splicer.chimeWidth = (endTime - startTime)*width/duration;
+
+        vm.widget.bind('playProgress', function(info) {
+          if (info.currentPosition >= vm.splicer.endTime) {
+            vm.widget.pause();
+          }
+        });
+      }
 
       vm.clearEndTime = function() {
-        vm.endTimeSet = false;
-        vm.endTime = vm.startTime;
-        vm.chimeWidth = 0;
+        vm.widget.unbind('playProgress');
+        vm.splicer.endTimeLocked = false;
+        vm.splicer.endTime = vm.splicer.startTime;
+        vm.splicer.chimeWidth = 0;
       };
 
-      vm.clearStartTime = function() {
-        vm.startTimeSet = false;
-        vm.endTimeSet = false;
-        vm.startTime = 0;
-        vm.endTime = 0;
+      vm.playTrack = function(track) {
+        var deferred = $q.defer();
+        SoundCloud.playTrack(track.permalink_url)
+          .then(function(oEmbed) {
+            console.log('oEmbed response: ', oEmbed);
+            vm.streamingTrack = track;
+            vm.soundCloudWidget = $sce.trustAsHtml(oEmbed.html);
+            $scope.$apply();
+
+            vm.iframe = document.getElementById('soundcloud_widget').querySelector('iframe');
+            vm.widget = SoundCloud.getSC().Widget(vm.iframe);
+            deferred.resolve();
+          });
+        return deferred.promise;
+      };
+
+      vm.playTrackSection = function() {
+        vm.widget.seekTo(vm.splicer.startTime);
+        vm.widget.isPaused(function(val) {
+          if (val) { vm.widget.play(); }
+        })
+      };
+
+      vm.selectTrack = function(track) {
+        vm.selectedTrack = track;
+        if(track !== vm.streamingTrack) {
+          vm.playTrack(track).then(function() {
+            vm.bindWidgetActions();
+          });
+        } else {
+          vm.bindWidgetActions()
+        }
+      };
+
+      vm.clearSelectedTrack = function() {
+        delete vm.selectedTrack;
+        delete vm.splicer;
+        vm.widget.unbind('seek');
+        vm.widget.unbind('play');
+        vm.widget.unbind('pause');
+      };
+
+      vm.bindWidgetActions = function() {
+        vm.widget.bind('seek', function(info) {
+          vm.adjustStartTime(info.currentPosition);
+        });
+
+        vm.widget.bind('play', function() {
+          vm.showEndTimeSetter = true;
+          $scope.$apply();
+        });
+
+        vm.widget.bind('pause', function() {
+          vm.showEndTimeSetter = false;
+          $scope.$apply();
+        });
       };
 
       vm.saveChime = function() {
         vm.processing = true;
         vm.message = '';
-
         Chime.create(vm.chimeData)
           .success(function(data) {
             vm.processing = false;
@@ -149,21 +230,6 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
               }, function(error) {
                 console.log("No tracks found matching that search term: ", error);
               });
-          };
-
-          scope.playTrack = function(track) {
-            SoundCloud.playTrack(track.permalink_url)
-              .then(function(oEmbed) {
-                console.log('oEmbed response: ', oEmbed);
-                scope.chime.streamingTrack = track;
-                scope.chime.soundCloudWidget = $sce.trustAsHtml(oEmbed.html);
-                scope.$apply();
-              });
-          };
-
-          scope.selectTrack = function(track) {
-            if(track !== scope.chime.streamingTrack) { scope.playTrack(track); }
-            scope.chime.selectedTrack = track;
           };
 
           scope.authenticateSoundCloud = function() {

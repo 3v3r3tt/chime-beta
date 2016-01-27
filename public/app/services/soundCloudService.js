@@ -11,6 +11,10 @@ angular.module('soundCloudService', [])
         redirect_uri: BASE_URL + '/callback'
   		});
 
+			soundCloudFactory.getSC = function() {
+				return SC;
+			}
+
       soundCloudFactory.getTrack = function(id) {
         return SC.get('/tracks/' + id);
       };
@@ -22,12 +26,14 @@ angular.module('soundCloudService', [])
       };
 
 			soundCloudFactory.playTrack = function(url) {
-				return SC.oEmbed(url, {
+				var oEmbed = SC.oEmbed(url, {
 					auto_play: true,
 					maxheight: '70px',
 					show_comments: false,
 					color: '00ECF2' }
 				);
+
+				return oEmbed;
 			};
 
       soundCloudFactory.authenticate = function authenticate() {

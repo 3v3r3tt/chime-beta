@@ -53,6 +53,10 @@
 						<label class="col-xs-10 control-description">
 							<p ng-bind="chime.selectedTrack.title"></p>
 						</label>
+						<label class="col-xs-2 control-label">Author: </label>
+						<label class="col-xs-10 control-description">
+							<p ng-bind="chime.selectedTrack.user.username"></p>
+						</label>
 						<label class="col-xs-2 control-label">Description: </label>
 						<label class="col-xs-10 control-description">
 							<p class="truncate-with-ellipsis" ng-bind="chime.selectedTrack.description"></p>
@@ -60,10 +64,6 @@
 						<label class="col-xs-2 control-label">Genre: </label>
 						<label class="col-xs-10 control-description">
 							<p ng-bind="chime.selectedTrack.genre"></p>
-						</label>
-						<label class="col-xs-2 control-label">Label: </label>
-						<label class="col-xs-10 control-description">
-							<p ng-bind="chime.selectedTrack.label_name"></p>
 						</label>
 						<div class="form-group">
 							<label for="inputPassword3" class="col-sm-2 control-label">Tags: </label>
@@ -76,35 +76,49 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
-					<div ng-if="chime.startTimeSet" class="selectable-waveform-overlay" ng-style="{'left': chime.leftOffset + 15, 'width': chime.chimeWidth}"></div>
+					<div ng-if="chime.splicer.startTimeLocked" class="selectable-waveform-overlay" ng-style="{'left': chime.splicer.leftOffset + 15, 'width': chime.splicer.chimeWidth}"></div>
 					<img class="selectable-waveform" src="{{chime.selectedTrack.waveform_url}}">
 					<div id="slider-container">
-						<input class="start-slider" ng-model="chime.startTime" type="range" min="0" max="{{chime.selectedTrack.duration}}">
-						<input class="end-slider" ng-style="{'left': chime.leftOffset, 'width': chime.widthOffset}" ng-if="chime.startTimeSet" ng-model="chime.endTime" type="range" min="{{chime.startTime}}" max="{{chime.selectedTrack.duration}}">
+						<input class="start-slider" ng-model="chime.splicer.startTime" type="range" min="0" max="{{chime.selectedTrack.duration}}">
+						<input class="end-slider" ng-style="{'left': chime.splicer.leftOffset, 'width': chime.splicer.widthOffset}" ng-if="chime.splicer.startTimeLocked" ng-model="chime.splicer.endTime" type="range" min="{{chime.splicer.startTime}}" max="{{chime.selectedTrack.duration}}">
 					</div>
 				</div>
 				<div class="col-xs-12">
-					<div class="input-group">
-						<p>Start Time: {{chime.startTime + ' ms'}}</p>
-					  <span class="input-group-btn">
-			      	<button type="button" ng-hide="chime.startTimeSet" ng-click="chime.setStartTime()" class="btn btn-primary btn-xs pull-left">Set Start Time</button>
-							<button type="button" ng-show="chime.startTimeSet" ng-click="chime.clearStartTime()" class="btn btn-warning btn-xs">Clear Start Time</button>
+					<div class="row">
+						<p class="col-xs-4">Start Time: {{chime.splicer.startTime + ' ms'}}</p>
+						<span class="col-xs-4 center-block">
+			      	<button ng-if="chime.splicer.endTimeLocked" ng-click="chime.playTrackSection()" type="button" class="btn btn-primary btn-sm center-block">
+								<i class="fa fa-md fa-play"></i> Play Selection
+							</button>
+							<button type="button" ng-if="!chime.splicer.endTimeLocked && chime.splicer.startTime" ng-click="chime.playTrackSection()" class="btn btn-primary btn-xs center-block">
+								<i class="fa fa-md fa-play"></i> Play from Start Time
+							</button>
+					  </span>
+						<span class="col-xs-4">
+			      	<button type="button" ng-hide="chime.splicer.startTimeLocked" ng-click="chime.lockStartTime()" class="btn btn-default btn-xs pull-right">Lock Start Time</button>
+							<button type="button" ng-show="chime.splicer.startTimeLocked" ng-click="chime.clearStartTime()" class="btn btn-warning btn-xs pull-right">Clear Start Time</button>
 					  </span>
 					</div>
-					<div ng-if="chime.startTimeSet" class="input-group">
-					  <p>End Time: {{chime.endTime + ' ms'}}</p>
-						<span class="input-group-btn">
- 							<button type="button" ng-hide="chime.endTimeSet" ng-click="chime.setEndTime()" class="btn btn-primary btn-xs">Set End Time</button>
-							<button type="button" ng-show="chime.endTimeSet" ng-click="chime.clearEndTime()" class="btn btn-warning btn-xs">Clear End Time</button>
- 					  </span>
+
+					<div ng-if="chime.splicer.startTimeLocked" class="row">
+						<p class="col-xs-4">End Time: {{chime.splicer.endTime + ' ms'}}</p>
+						<span class="col-xs-4 center-block">
+							<button type="button" ng-click="chime.setEndTime()" ng-if="!chime.splicer.endTimeLocked && chime.showEndTimeSetter" class="btn btn-primary btn-xs center-block">
+								<i class="fa fa-md fa-stop"></i> Set End Time
+							</button>
+					  </span>
+						<span class="col-xs-4">
+							<button type="button" ng-hide="chime.splicer.endTimeLocked" ng-click="chime.lockEndTime()" class="btn btn-default btn-xs pull-right">Lock End Time</button>
+							<button type="button" ng-show="chime.splicer.endTimeLocked" ng-click="chime.clearEndTime()" class="btn btn-warning btn-xs pull-right">Clear End Time</button>					  </span>
 					</div>
+
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<div class="panel-footer">
-	  <div ng-bind-html="chime.soundCloudWidget"></div >
+	  <div id="soundcloud_widget" ng-bind-html="chime.soundCloudWidget"></div >
 	</div>
 </div>
 <!--

@@ -35,6 +35,7 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
     function(Chime, SoundCloud, $scope, $sce, $q) {
       var vm = this;
       vm.type = 'create';
+      vm.splicer = {};
 
       vm.musicProviders = [
         { name: 'SoundCloud', icon: 'fa-soundcloud', value: 'soundCloud' },
@@ -57,40 +58,47 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
 
       vm.lockStartTime = function() {
         console.log('locking startTime');
-        vm.startTimeLocked = true;
-        var startTime = +vm.startTime;
+        vm.splicer.startTimeLocked = true;
+        var startTime = +vm.splicer.startTime;
         var duration = vm.selectedTrack.duration;
         var width = angular.element(document.getElementById('slider-container'))[0].clientWidth;
-        vm.leftOffset = startTime/duration*width;
-        vm.widthOffset = width - vm.leftOffset;
+        vm.splicer.leftOffset = startTime/duration*width;
+        vm.splicer.widthOffset = width - vm.splicer.leftOffset;
       }
 
+      vm.clearStartTime = function() {
+        vm.splicer.startTimeLocked = false;
+        vm.splicer.endTimeLocked = false;
+        vm.splicer.startTime = 0;
+        vm.splicer.endTime = 0;
+      };
+
+
       vm.adjustStartTime = function(startTime) {
-        if (vm.startTimeLocked || startTime === -1) { return };
-        console.log(vm.startTime);
-        console.log('setting startTime to: ', startTime);
-        vm.startTime = startTime;
+        if (vm.splicer.startTimeLocked || startTime === -1) { return };
+        vm.splicer.startTime = startTime;
         $scope.$apply();
       };
 
       vm.setEndTime = function() {
+        if (vm.splicer.endTimeLocked) { return };
         vm.widget.pause();
         vm.widget.getPosition(function(time) {
-          vm.endTime = time;
+          vm.splicer.endTime = time;
           $scope.$apply();
         })
       };
 
       vm.lockEndTime = function() {
-        vm.endTimeLocked = true;
-        var startTime = +vm.startTime;
-        var endTime = +vm.endTime;
+        vm.splicer.endTimeLocked = true;
+        var startTime = +vm.splicer.startTime;
+        var endTime = +vm.splicer.endTime;
         var duration = vm.selectedTrack.duration;
         var width = angular.element(document.getElementById('slider-container'))[0].clientWidth;
-        vm.chimeWidth = (endTime - startTime)*width/duration;
+        vm.splicer.chimeWidth = (endTime - startTime)*width/duration;
 
         vm.widget.bind('playProgress', function(info) {
-          if (info.currentPosition >= vm.endTime) {
+          if (info.currentPosition >= vm.splicer.endTime) {
             vm.widget.pause();
           }
         });
@@ -98,16 +106,9 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
 
       vm.clearEndTime = function() {
         vm.widget.unbind('playProgress');
-        vm.endTimeLocked = false;
-        vm.endTime = vm.startTime;
-        vm.chimeWidth = 0;
-      };
-
-      vm.clearStartTime = function() {
-        vm.startTimeLocked = false;
-        vm.endTimeLocked = false;
-        vm.startTime = 0;
-        vm.endTime = 0;
+        vm.splicer.endTimeLocked = false;
+        vm.splicer.endTime = vm.splicer.startTime;
+        vm.splicer.chimeWidth = 0;
       };
 
       vm.playTrack = function(track) {
@@ -126,69 +127,51 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
         return deferred.promise;
       };
 
-      vm.selectTrack = function(track) {
-        vm.selectedTrack = track;
-        if(track !== vm.streamingTrack) {
-          vm.playTrack(track).then(function() {
-            vm.widget.bind('seek', function(info) {
-              console.log('Seeking....');
-              console.log(info);
-              vm.adjustStartTime(info.currentPosition);
-            });
-
-            vm.widget.bind('play', function() {
-              console.log('playing...');
-              vm.showEndTimeSetter = true;
-              $scope.$apply();
-            });
-
-            vm.widget.bind('pause', function() {
-              console.log('paused...');
-              vm.showEndTimeSetter = false;
-              $scope.$apply();
-            });
-          });
-        } else {
-          vm.widget.bind('seek', function(info) {
-            console.log('Seeking....');
-            console.log(info);
-            vm.adjustStartTime(info.currentPosition);
-          });
-          
-          vm.widget.bind('play', function() {
-            console.log('playing...');
-            vm.showEndTimeSetter = true;
-            $scope.$apply();
-          });
-
-          vm.widget.bind('pause', function() {
-            console.log('paused...');
-            vm.showEndTimeSetter = false;
-            $scope.$apply();
-          });
-        }
-      };
-
-      vm.clearSelectedTrack = function() {
-        delete vm.selectedTrack;
-      };
-
       vm.playTrackSection = function() {
-        console.log('playTrackSection...');
-        console.log(vm.startTime);
-        console.log(vm.endTime);
-        console.log(vm.selectedTrack);
-
-        vm.widget.seekTo(vm.startTime);
+        vm.widget.seekTo(vm.splicer.startTime);
         vm.widget.isPaused(function(val) {
           if (val) { vm.widget.play(); }
         })
       };
 
+      vm.selectTrack = function(track) {
+        vm.selectedTrack = track;
+        if(track !== vm.streamingTrack) {
+          vm.playTrack(track).then(function() {
+            vm.bindWidgetActions();
+          });
+        } else {
+          vm.bindWidgetActions()
+        }
+      };
+
+      vm.clearSelectedTrack = function() {
+        delete vm.selectedTrack;
+        delete vm.splicer;
+        vm.widget.unbind('seek');
+        vm.widget.unbind('play');
+        vm.widget.unbind('pause');
+      };
+
+      vm.bindWidgetActions = function() {
+        vm.widget.bind('seek', function(info) {
+          vm.adjustStartTime(info.currentPosition);
+        });
+
+        vm.widget.bind('play', function() {
+          vm.showEndTimeSetter = true;
+          $scope.$apply();
+        });
+
+        vm.widget.bind('pause', function() {
+          vm.showEndTimeSetter = false;
+          $scope.$apply();
+        });
+      };
+
       vm.saveChime = function() {
         vm.processing = true;
         vm.message = '';
-
         Chime.create(vm.chimeData)
           .success(function(data) {
             vm.processing = false;

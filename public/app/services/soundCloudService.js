@@ -36,17 +36,6 @@ angular.module('soundCloudService', [])
 				return oEmbed;
 			};
 
-			soundCloudFactory.playTrackSection = function(url, startOffset) {
-				var offset = startOffset.toString() + 's'
-				return SC.oEmbed(url, {
-					t: offset,
-					auto_play: true,
-					maxheight: '70px',
-					show_comments: false,
-					color: '00ECF2' }
-				);
-			};
-
       soundCloudFactory.authenticate = function authenticate() {
         // initiate authentication popup
         return SC.connect(function() {

@@ -9,6 +9,7 @@ angular.module('userApp', [
   'userService',
   'chimeService',
   'interestedUserService',
+  'customFilters',
   'ui.bootstrap'])
 
   .config([

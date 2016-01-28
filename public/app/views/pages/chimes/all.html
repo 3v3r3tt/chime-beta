@@ -18,18 +18,20 @@
   <table class="table table-bordered table-striped">
   	<thead>
   		<tr>
-  			<th>_id</th>
-  			<th>Title</th>
-  			<th>Author</th>
-  			<th class="col-sm-2"></th>
+        <th class="col-xs-2">Title</th>
+        <th class="col-xs-2">User</th>
+        <th class="col-xs-2">Image</th>
+        <th class="col-xs-5">Waveform</th>
+  			<th class="col-sm-1"></th>
   		</tr>
   	</thead>
   	<tbody>
   		<tr ng-repeat="chimeObj in chime.chimes">
-  			<td>{{ chimeObj._id }}</td>
   			<td>{{ chimeObj.title }}</td>
-  			<td>{{ chimeObj.author }}</td>
-  			<td class="col-sm-2">
+  			<td>{{ chimeObj.artist }}</td>
+  			<td><img src="{{ chimeObj.artwork }}"></td>
+        <td><img class="waveform" src="{{ chimeObj.waveform }}"></td>
+  			<td>
   				<a ng-href="/chimes/{{ chimeObj._id }}" class="btn btn-primary">Edit</a>
   				<a href="#" ng-click="chime.deleteChime(chimeObj._id)" class="btn btn-danger">Delete</a>
   			</td>

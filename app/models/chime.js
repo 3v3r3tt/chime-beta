@@ -3,9 +3,13 @@ var Schema = mongoose.Schema;
 
 var ChimeSchema = new Schema({
   title: { type: String, required: true },
-  author: { type: String, required: true },
-  date: Date,
-  tags: [String]
+  artist: { type: String, required: true },
+  url: { type: String, required: true },
+  artwork: { type: String  },
+  waveform: { type: String, required: true },
+  startTime: { type: Number, required: true, min: 0 },
+  endTime: { type: Number, required: true },
+  duration: { type: Number, required: true }
 });
 
 ChimeSchema.pre('save', function(next) {

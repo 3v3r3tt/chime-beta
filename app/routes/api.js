@@ -187,9 +187,13 @@ module.exports = function(app, express) {
 		.post(function(req, res) {
 			var chime = new Chime();
 			chime.title = req.body.title;
-			chime.author = req.body.author;
-			chime.date = req.body.date;
-			chime.tags = req.body.tags;
+			chime.artist = req.body.artist;
+			chime.url = req.body.url;
+			chime.artwork = req.body.artwork;
+			chime.waveform = req.body.waveform;
+			chime.startTime = req.body.startTime;
+			chime.endTime = req.body.endTime;
+			chime.duration = req.body.duration;
 
 			chime.save(function(err) {
 				if(err) {
@@ -218,9 +222,13 @@ module.exports = function(app, express) {
 		.put(function(req, res) {
 			Chime.findById(req.params.chime_id, function(err, chime) {
 				if (req.body.title) chime.title = req.body.title;
-				if (req.body.author) chime.author = req.body.author;
-				if (req.body.date) chime.date = req.body.date;
-				if (req.body.tags) chime.tags = req.body.tags;
+				if (req.body.artist) chime.title = req.body.artist;
+				if (req.body.url) chime.title = req.body.url;
+				if (req.body.artwork) chime.title = req.body.artwork;
+				if (req.body.waveform) chime.title = req.body.waveform;
+				if (req.body.startTime) chime.title = req.body.startTime;
+				if (req.body.endTime) chime.title = req.body.endTime;
+				if (req.body.duration) chime.title = req.body.duration;
 
 				chime.save(function(err){
 					if (err) res.send(err);

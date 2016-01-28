@@ -57,7 +57,6 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
       };
 
       vm.lockStartTime = function() {
-        console.log('locking startTime');
         vm.splicer.startTimeLocked = true;
         var startTime = +vm.splicer.startTime;
         var duration = vm.selectedTrack.duration;
@@ -170,9 +169,20 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
       };
 
       vm.saveChime = function() {
+        var chime = {
+          'title': vm.selectedTrack.title,
+          'artist': vm.selectedTrack.user.username,
+          'url': vm.selectedTrack.permalink_url,
+          'artwork': vm.selectedTrack.artwork_url,
+          'waveform': vm.selectedTrack.waveform_url,
+          'startTime': vm.splicer.startTime,
+          'endTime': vm.splicer.endTime,
+          'duration': vm.selectedTrack.duration
+        };
+
         vm.processing = true;
         vm.message = '';
-        Chime.create(vm.chimeData)
+        Chime.create(chime)
           .success(function(data) {
             vm.processing = false;
             vm.chimeData = {};

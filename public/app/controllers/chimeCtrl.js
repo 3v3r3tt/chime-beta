@@ -258,7 +258,7 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
             scope.chime.widget.unbind('seek');
             scope.chime.widget.unbind('play');
             scope.chime.widget.unbind('pause');
-            angular.element($window).unbind('resize');
+            if(angular.element($window)) { angular.element($window).unbind('resize'); }
           };
 
           scope.chime.bindWidgetActions = function() {

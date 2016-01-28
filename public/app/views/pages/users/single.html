@@ -28,8 +28,7 @@
 
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-6">
-				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="user.type == 'create'">Create User</button>
-				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="user.type == 'edit'">Update User</button>
+				<button type="submit" class="btn btn-success btn-lg btn-block">{{user.type | titleize}} User</button>
 			</div>
 		</div>
 

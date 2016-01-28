@@ -32,9 +32,11 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
     '$scope',
     '$sce',
     '$q',
-    function(Chime, SoundCloud, $scope, $sce, $q) {
+    '$location',
+    function(Chime, SoundCloud, $scope, $sce, $q, $location) {
       var vm = this;
       vm.type = 'create';
+      vm.processing = false;
       vm.splicer = {};
 
       vm.musicProviders = [
@@ -181,12 +183,12 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
         };
 
         vm.processing = true;
-        vm.message = '';
         Chime.create(chime)
           .success(function(data) {
             vm.processing = false;
             vm.chimeData = {};
-            vm.message = data.message;
+            vm.clearSelectedTrack();
+            $location.path('/chimes');
           });
       };
     }

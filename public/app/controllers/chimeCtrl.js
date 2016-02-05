@@ -1,7 +1,12 @@
 angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
   .controller('chimeController', [
     'Chime',
-    function(Chime) {
+    'SoundCloud',
+    '$sce',
+    '$scope',
+    '$q',
+    '$timeout',
+    function(Chime, SoundCloud, $sce, $scope, $q, $timeout) {
       var vm = this;
       vm.processing = true;
 
@@ -11,9 +16,45 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
           vm.chimes = data;
         });
 
+      vm.playChime = function(chime) {
+        var deferred = $q.defer();
+        SoundCloud.playTrack(chime.url)
+          .then(function(oEmbed) {
+            vm.soundCloudWidget = $sce.trustAsHtml(oEmbed.html);
+            $scope.$apply();
+
+            vm.iframe = document.getElementById('soundcloud_chime_widget').querySelector('iframe');
+            vm.widget = SoundCloud.getSC().Widget(vm.iframe);
+            deferred.resolve();
+          });
+        return deferred.promise;
+      };
+
+      vm.playFromStartTime = function(chime) {
+        vm.playChime(chime).then(function() {
+          vm.widget.bind('play', function() {
+            vm.widget.seekTo(chime.startTime);
+          });
+          vm.widget.bind('playProgress', function(info) {
+            if (info.currentPosition >= chime.endTime) {
+              vm.widget.pause();
+            }
+          });
+        });
+      };
+
+      vm.getLeftOffset = function(chime) {
+        var leftOffset = chime.startTime/chime.duration*400 + 8;
+        return leftOffset;
+      }
+
+      vm.getChimeWidth = function(chime) {
+        var chimeWidth = (chime.endTime - chime.startTime)*400/chime.duration;
+        return chimeWidth;
+      }
+
       vm.deleteChime = function(id) {
         vm.processing = true;
-
         Chime.delete(id)
           .success(function(data) {
             Chime.all()
@@ -57,11 +98,14 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
 
       vm.saveChime = function() {
         var chime = {
-          'title': vm.selectedTrack.title,
-          'artist': vm.selectedTrack.user.username,
-          'url': vm.selectedTrack.permalink_url,
-          'artwork': vm.selectedTrack.artwork_url,
-          'waveform': vm.selectedTrack.waveform_url,
+          'title': vm.chimeData.title,
+          'artist': vm.chimeData.artist,
+          'url': vm.chimeData.url,
+          'description': vm.chimeData.description,
+          'genre': vm.chimeData.genre,
+          'tags': vm.chimeData.tags,
+          'artwork': vm.chimeData.artwork,
+          'waveform': vm.chimeData.waveform,
           'startTime': vm.splicer.startTime,
           'endTime': vm.splicer.endTime,
           'duration': vm.selectedTrack.duration
@@ -81,14 +125,28 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
 
   .controller('chimeEditController', [
     '$routeParams',
+    '$scope',
     'Chime',
-    function($routeParams, Chime) {
+    function($routeParams, $scope, Chime) {
       var vm = this;
       vm.type = 'update';
 
       Chime.get($routeParams.chime_id)
         .success(function(data) {
           vm.chimeData = data;
+          vm.selectedTrack = true;
+          vm.splicer = {
+            'startTime': vm.chimeData.startTime,
+            'endTime': vm.chimeData.endTime,
+            'duration': vm.chimeData.duration,
+            'startTimeLocked': true,
+            'endTimeLocked': true
+          };
+          vm.playTrack(vm.chimeData).then(function() {
+            vm.lockEndTime();
+            vm.setSliderOffsets();
+            vm.bindWidgetActions();
+          });
         });
 
       vm.saveChime = function() {
@@ -142,7 +200,8 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
     '$q',
     '$sce',
     '$window',
-    function(SoundCloud, $q, $sce, $window) {
+    '$location',
+    function(SoundCloud, $q, $sce, $window, $location) {
       return{
         restrict: 'E',
         scope: {
@@ -152,6 +211,7 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
         link: function(scope, element, attrs) {
           scope.chime.lockStartTime = function() {
             scope.chime.splicer.startTimeLocked = true;
+            scope.chime.splicer.endTime = scope.chime.splicer.startTime;
             scope.chime.setSliderOffsets();
           };
 
@@ -160,12 +220,22 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
             scope.chime.splicer.endTimeLocked = false;
             scope.chime.splicer.startTime = 0;
             scope.chime.splicer.endTime = 0;
+            scope.chime.splicer.leftOffset = 0;
           };
 
           scope.chime.adjustStartTime = function(startTime) {
             if (scope.chime.splicer.startTimeLocked || startTime === -1) { return; }
             scope.chime.splicer.startTime = startTime;
+            scope.chime.setSliderOffsets();
             scope.$apply();
+          };
+
+          scope.chime.setStartTime = function() {
+            scope.chime.widget.getPosition(function(time) {
+              scope.chime.splicer.startTime = time;
+              scope.chime.setSliderOffsets();
+              scope.$apply();
+            });
           };
 
           scope.chime.setEndTime = function() {
@@ -173,6 +243,7 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
             scope.chime.widget.pause();
             scope.chime.widget.getPosition(function(time) {
               scope.chime.splicer.endTime = time;
+              scope.chime.setSliderOffsets();
               scope.$apply();
             });
           };
@@ -201,20 +272,19 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
 
           scope.chime.setSliderOffsets = function() {
             var startTime = +scope.chime.splicer.startTime;
-            var duration = scope.chime.selectedTrack.duration;
+            var endTime = +scope.chime.splicer.endTime;
+            var duration = +scope.chime.chimeData.duration;
             var width = angular.element(document.getElementById('slider-container'))[0].clientWidth;
+
             scope.chime.splicer.leftOffset = startTime/duration*width;
             scope.chime.splicer.widthOffset = width - scope.chime.splicer.leftOffset;
-
-            if(scope.chime.splicer.endTimeLocked) {
-              var endTime = +scope.chime.splicer.endTime;
-              scope.chime.splicer.chimeWidth = (endTime - startTime)*width/duration;
-            }
+            scope.chime.splicer.chimeWidth = (endTime - startTime)*width/duration;
           };
 
           scope.chime.playTrack = function(track) {
             var deferred = $q.defer();
-            SoundCloud.playTrack(track.permalink_url)
+            var url = track.permalink_url || track.url;
+            SoundCloud.playTrack(url)
               .then(function(oEmbed) {
                 console.log('oEmbed response: ', oEmbed);
                 scope.chime.streamingTrack = track;
@@ -237,6 +307,18 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
 
           scope.chime.selectTrack = function(track) {
             scope.chime.selectedTrack = track;
+
+            scope.chime.chimeData = {};
+            scope.chime.chimeData.title = track.title;
+            scope.chime.chimeData.artist = track.user.username;
+            scope.chime.chimeData.description = track.description;
+            scope.chime.chimeData.genre = track.genre;
+            scope.chime.chimeData.tags = track.tag_list;
+            scope.chime.chimeData.url = track.permalink_url;
+            scope.chime.chimeData.artwork = track.artwork_url || track.user.avatar_url;
+            scope.chime.chimeData.waveform = track.waveform_url;
+            scope.chime.chimeData.duration = track.duration;
+
             if(track !== scope.chime.streamingTrack) {
               scope.chime.playTrack(track).then(function() {
                 scope.chime.bindWidgetActions();
@@ -253,12 +335,18 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
           };
 
           scope.chime.cleanUp = function() {
-            delete scope.chime.selectedTrack;
             delete scope.chime.splicer;
-            scope.chime.widget.unbind('seek');
-            scope.chime.widget.unbind('play');
-            scope.chime.widget.unbind('pause');
+            if(scope.chime.widget) {
+              scope.chime.widget.unbind('seek');
+              scope.chime.widget.unbind('play');
+              scope.chime.widget.unbind('pause');
+            }
             if(angular.element($window)) { angular.element($window).unbind('resize'); }
+            if(scope.chime.type == 'create') {
+              delete scope.chime.selectedTrack;
+            } else {
+              $location.path('/chimes');
+            }
           };
 
           scope.chime.bindWidgetActions = function() {

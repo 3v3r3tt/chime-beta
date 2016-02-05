@@ -97,6 +97,19 @@ p{
 	bottom: 62px;
 }
 
+.start-lock-indicator {
+	position:absolute;
+	bottom: 70px;
+	left: -10px;
+}
+
+.end-lock-indicator {
+	position:absolute;
+	bottom: 46px;
+	left: -10px;
+	z-index: 2;
+}
+
 .end-slider {
   position: absolute;
   z-index: 2;
@@ -121,9 +134,21 @@ footer p {
 
 .waveform {
 	background-color: @secondary;
-	width: 100%;
-	max-height: 150px;
+	width: 400px;
+	height: 80px;
 	margin-top: 10px;
+}
+
+.waveform-overlay {
+	position: absolute;;
+	border: 1px solid @primary;
+	background-color: rgba(0, 236, 242, 0.5);
+	height: 80px;
+	margin-top: 10px;
+}
+
+.waveform-container-cell {
+	position: relative;
 }
 
 .selectable-waveform {

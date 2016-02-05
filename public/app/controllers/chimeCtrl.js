@@ -133,7 +133,6 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
 
       Chime.get($routeParams.chime_id)
         .success(function(data) {
-          console.log(data);
           vm.chimeData = data;
           vm.selectedTrack = true;
           vm.splicer = {
@@ -143,7 +142,6 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
             'startTimeLocked': true,
             'endTimeLocked': true
           };
-          console.log(vm.splicer);
           vm.playTrack(vm.chimeData).then(function() {
             vm.lockEndTime();
             vm.setSliderOffsets();

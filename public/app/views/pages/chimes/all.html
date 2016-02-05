@@ -1,48 +1,60 @@
-<div class="page-header">
-  <h1>
-		Chimes
-		<a href="/chimes/create" class="btn btn-default">
-			<span class="glyphicon glyphicon-plus"></span>
-			New Chime
-		</a>
-	</h1>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="col-xs-3">
+    </div>
+    <div class="col-xs-6 text-center">
+      <h1>Chimes</h1>
+    </div>
+    <div class="col-xs-3">
+      <a href="/chimes/create" class="btn btn-default pull-right">
+  			<span class="glyphicon glyphicon-plus"></span>
+  			New Chime
+  		</a>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="text-center" ng-show="chime.processing">
+    	<span class="glyphicon glyphicon-repeat spinner"></span>
+    	<p>Loading Chimes...</p>
+    </div>
+    <div ng-show="chime.chimes && !chime.processing">
+      <table class="table table-bordered table-striped">
+      	<thead>
+      		<tr>
+            <th class="col-xs-2">Title</th>
+            <th class="col-xs-2">User</th>
+            <th class="col-xs-2">Image</th>
+            <th class="col-xs-5">Waveform</th>
+      			<th class="col-sm-1"></th>
+      		</tr>
+      	</thead>
+      	<tbody>
+      		<tr ng-repeat="chimeObj in chime.chimes">
+      			<td>{{ chimeObj.title }}</td>
+      			<td>{{ chimeObj.artist }}</td>
+      			<td><img src="{{ chimeObj.artwork }}"></td>
+            <td id="waveform-container-cell">
+              <div class="waveform-overlay" ng-style="{'left': chime.getLeftOffset(chimeObj), 'width': chime.getChimeWidth(chime)}"></div>
+              <img class="waveform" src="{{ chimeObj.waveform }}">
+            </td>
+      			<td>
+              <a ng-click="chime.playFromStartTime(chimeObj)" class="btn btn-primary btn-sm col-xs-12">
+                <i class="fa fa-play-circle-o"></i> Play
+              </a>
+              <a ng-href="/chimes/{{ chimeObj._id }}" class="btn btn-default btn-sm col-xs-12">
+                <i class="fa fa-pencil"></i> Edit
+              </a>
+              <a href="#" ng-click="chime.deleteChime(chimeObj._id)" class="btn btn-danger btn-sm col-xs-12">
+                <i class="fa fa-trash-o"></i> Delete
+              </a>
+      			</td>
+      		</tr>
+      	</tbody>
+      </table>
+    </div>
+  </div>
 
-</div>
-
-<div class="jumbotron text-center" ng-show="chime.processing">
-	<span class="glyphicon glyphicon-repeat spinner"></span>
-	<p>Loading Chimes...</p>
-</div>
-
-<div class="jumbotron text-center" ng-show="chime.chimes && !chime.processing">
-  <table class="table table-bordered table-striped">
-  	<thead>
-  		<tr>
-        <th class="col-xs-2">Title</th>
-        <th class="col-xs-2">User</th>
-        <th class="col-xs-2">Image</th>
-        <th class="col-xs-5">Waveform</th>
-  			<th class="col-sm-1"></th>
-  		</tr>
-  	</thead>
-  	<tbody>
-  		<tr ng-repeat="chimeObj in chime.chimes">
-  			<td>{{ chimeObj.title }}</td>
-  			<td>{{ chimeObj.artist }}</td>
-  			<td><img src="{{ chimeObj.artwork }}"></td>
-        <td><img class="waveform" src="{{ chimeObj.waveform }}"></td>
-  			<td>
-          <a class="btn btn-primary btn-sm col-xs-12">
-            <i class="fa fa-play-circle-o"></i> Play
-          </a>
-          <a ng-href="/chimes/{{ chimeObj._id }}" class="btn btn-default btn-sm col-xs-12">
-            <i class="fa fa-pencil"></i> Edit
-          </a>
-          <a href="#" ng-click="chime.deleteChime(chimeObj._id)" class="btn btn-danger btn-sm col-xs-12">
-            <i class="fa fa-trash-o"></i> Delete
-          </a>
-  			</td>
-  		</tr>
-  	</tbody>
-  </table>
+  <div class="panel-footer">
+    <div id="soundcloud_chime_widget" ng-bind-html="chime.soundCloudWidget"></div>
+  </div>
 </div>

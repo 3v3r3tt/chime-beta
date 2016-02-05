@@ -1,7 +1,12 @@
 angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
   .controller('chimeController', [
     'Chime',
-    function(Chime) {
+    'SoundCloud',
+    '$sce',
+    '$scope',
+    '$q',
+    '$timeout',
+    function(Chime, SoundCloud, $sce, $scope, $q, $timeout) {
       var vm = this;
       vm.processing = true;
 
@@ -11,9 +16,52 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
           vm.chimes = data;
         });
 
+      vm.playChime = function(chime) {
+        var deferred = $q.defer();
+        SoundCloud.playTrack(chime.url)
+          .then(function(oEmbed) {
+            vm.soundCloudWidget = $sce.trustAsHtml(oEmbed.html);
+            $scope.$apply();
+
+            vm.iframe = document.getElementById('soundcloud_chime_widget').querySelector('iframe');
+            vm.widget = SoundCloud.getSC().Widget(vm.iframe);
+            deferred.resolve();
+          });
+        return deferred.promise;
+      };
+
+      vm.playFromStartTime = function(chime) {
+        vm.playChime(chime).then(function() {
+          vm.widget.bind('play', function() {
+            vm.widget.seekTo(chime.startTime);
+          });
+          vm.widget.bind('playProgress', function(info) {
+            if (info.currentPosition >= chime.endTime) {
+              vm.widget.pause();
+            }
+          });
+        });
+      };
+
+      vm.getLeftOffset = function(chime) {
+        var width = angular.element(document.getElementById('waveform-container-cell'))[0].offsetWidth;
+        console.log(angular.element(document.getElementById('waveform-container-cell'))[0].offsetWidth);
+        console.log(width);
+        var leftOffset = chime.startTime/chime.duration*width;
+        console.log(leftOffset);
+        return leftOffset;
+      }
+
+      vm.getChimeWidth = function(chime) {
+        var width = angular.element(document.getElementById('waveform-container-cell'))[0].offsetWidth;
+        console.log(angular.element(document.getElementById('waveform-container-cell'))[0].offsetWidth);
+        console.log('width:', width);
+        var chimeWidth = (chime.endTime - chime.startTime)*width/chime.duration;
+        return chimeWidth;
+      }
+
       vm.deleteChime = function(id) {
         vm.processing = true;
-
         Chime.delete(id)
           .success(function(data) {
             Chime.all()
@@ -192,7 +240,6 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
           };
 
           scope.chime.setStartTime = function() {
-            if (scope.chime.splicer.startTimeLocked) { return; }
             scope.chime.widget.getPosition(function(time) {
               scope.chime.splicer.startTime = time;
               scope.chime.setSliderOffsets();

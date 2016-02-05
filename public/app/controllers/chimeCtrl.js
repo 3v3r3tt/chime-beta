@@ -191,11 +191,21 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
             scope.$apply();
           };
 
+          scope.chime.setStartTime = function() {
+            if (scope.chime.splicer.startTimeLocked) { return; }
+            scope.chime.widget.getPosition(function(time) {
+              scope.chime.splicer.startTime = time;
+              scope.chime.setSliderOffsets();
+              scope.$apply();
+            });
+          };
+
           scope.chime.setEndTime = function() {
             if (scope.chime.splicer.endTimeLocked) { return; }
             scope.chime.widget.pause();
             scope.chime.widget.getPosition(function(time) {
               scope.chime.splicer.endTime = time;
+              scope.chime.setSliderOffsets();
               scope.$apply();
             });
           };

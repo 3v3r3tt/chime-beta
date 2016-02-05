@@ -36,7 +36,7 @@ angular.module('soundCloudService', [])
 				return oEmbed;
 			};
 
-      soundCloudFactory.authenticate = function authenticate() {
+      soundCloudFactory.authenticate = function() {
         // initiate authentication popup
         return SC.connect(function() {
           // This gets the authenticated user's username
@@ -45,6 +45,10 @@ angular.module('soundCloudService', [])
           });
         });
       };
+
+			soundCloudFactory.mapToChime = function(track) {
+				return true;
+			}
 
 			return soundCloudFactory;
 		}

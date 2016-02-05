@@ -1,31 +1,31 @@
 <div class="row">
   <div class="col-xs-4">
     <div class="img-responsive center-block">
-      <img width="250px" class="margin-left-20" src="{{chime.selectedTrack.artwork_url || chime.selectedTrack.user.avatar_url}}">
+      <img width="250px" class="margin-left-20" src="{{chime.chimeData.artwork}}">
     </div>
   </div>
   <div class="col-xs-8">
     <form class="form-horizontal">
       <label class="col-xs-2 control-label">Title: </label>
-      <label class="col-xs-10 control-description">
-        <p ng-bind="chime.selectedTrack.title"></p>
+      <label class="col-xs-10">
+        <p ng-bind="chime.chimeData.title"></p>
       </label>
-      <label class="col-xs-2 control-label">Author: </label>
-      <label class="col-xs-10 control-description">
-        <p ng-bind="chime.selectedTrack.user.username"></p>
+      <label class="col-xs-2 control-label">Artist: </label>
+      <label class="col-xs-10">
+        <p ng-bind="chime.chimeData.artist"></p>
       </label>
       <label class="col-xs-2 control-label">Description: </label>
-      <label class="col-xs-10 control-description">
-        <p class="truncate-with-ellipsis" ng-bind="chime.selectedTrack.description"></p>
+      <label class="col-xs-10">
+        <p class="truncate-with-ellipsis" ng-bind="chime.chimeData.description"></p>
       </label>
       <label class="col-xs-2 control-label">Genre: </label>
-      <label class="col-xs-10 control-description">
-        <p ng-bind="chime.selectedTrack.genre"></p>
+      <label class="col-xs-10">
+        <p ng-bind="chime.chimeData.genre"></p>
       </label>
       <div class="form-group">
         <label for="inputPassword3" class="col-sm-2 control-label">Tags: </label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" ng-model="chime.selectedTrack.tags" placeholder="Tags">
+          <input type="text" class="form-control" ng-model="chime.chimeData.tags" placeholder="Tags">
         </div>
       </div>
     </form>
@@ -34,10 +34,10 @@
 <div class="row">
   <div class="col-xs-12">
     <div ng-if="chime.splicer.startTimeLocked" class="selectable-waveform-overlay" ng-style="{'left': chime.splicer.leftOffset + 15, 'width': chime.splicer.chimeWidth}"></div>
-    <img class="selectable-waveform" src="{{chime.selectedTrack.waveform_url}}">
+    <img class="selectable-waveform" src="{{chime.chimeData.waveform}}">
     <div id="slider-container">
-      <input ng-disabled="chime.splicer.startTimeLocked" class="start-slider" ng-model="chime.splicer.startTime" type="range" min="0" max="{{chime.selectedTrack.duration}}">
-      <input ng-disabled="chime.splicer.endTimeLocked" class="end-slider" ng-style="{'left': chime.splicer.leftOffset, 'width': chime.splicer.widthOffset}" ng-if="chime.splicer.startTimeLocked" ng-model="chime.splicer.endTime" type="range" min="{{chime.splicer.startTime}}" max="{{chime.selectedTrack.duration}}">
+      <input ng-disabled="chime.splicer.startTimeLocked" class="start-slider" ng-model="chime.splicer.startTime" type="range" min="0" max="{{chime.chimeData.duration}}">
+      <input ng-disabled="chime.splicer.endTimeLocked" class="end-slider" ng-style="{'left': chime.splicer.leftOffset, 'width': chime.splicer.widthOffset}" ng-if="chime.splicer.startTimeLocked" ng-model="chime.splicer.endTime" type="range" min="{{chime.splicer.startTime}}" max="{{chime.chimeData.duration}}">
     </div>
   </div>
   <div class="col-xs-12">
@@ -66,7 +66,8 @@
       </span>
       <span class="col-xs-4">
         <button type="button" ng-hide="chime.splicer.endTimeLocked" ng-click="chime.lockEndTime()" class="btn btn-default btn-xs pull-right">Lock End Time</button>
-        <button type="button" ng-show="chime.splicer.endTimeLocked" ng-click="chime.clearEndTime()" class="btn btn-warning btn-xs pull-right">Clear End Time</button>					  </span>
+        <button type="button" ng-show="chime.splicer.endTimeLocked" ng-click="chime.clearEndTime()" class="btn btn-warning btn-xs pull-right">Clear End Time</button>
+      </span>
     </div>
 
   </div>

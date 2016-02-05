@@ -44,19 +44,12 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
       };
 
       vm.getLeftOffset = function(chime) {
-        var width = angular.element(document.getElementById('waveform-container-cell'))[0].offsetWidth;
-        console.log(angular.element(document.getElementById('waveform-container-cell'))[0].offsetWidth);
-        console.log(width);
-        var leftOffset = chime.startTime/chime.duration*width;
-        console.log(leftOffset);
+        var leftOffset = chime.startTime/chime.duration*400 + 8;
         return leftOffset;
       }
 
       vm.getChimeWidth = function(chime) {
-        var width = angular.element(document.getElementById('waveform-container-cell'))[0].offsetWidth;
-        console.log(angular.element(document.getElementById('waveform-container-cell'))[0].offsetWidth);
-        console.log('width:', width);
-        var chimeWidth = (chime.endTime - chime.startTime)*width/chime.duration;
+        var chimeWidth = (chime.endTime - chime.startTime)*400/chime.duration;
         return chimeWidth;
       }
 

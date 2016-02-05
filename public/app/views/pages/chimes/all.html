@@ -25,17 +25,17 @@
             <th class="col-xs-2">User</th>
             <th class="col-xs-2">Image</th>
             <th class="col-xs-5">Waveform</th>
-      			<th class="col-sm-1"></th>
+      			<th class="col-xs-1"></th>
       		</tr>
       	</thead>
       	<tbody>
       		<tr ng-repeat="chimeObj in chime.chimes">
       			<td>{{ chimeObj.title }}</td>
       			<td>{{ chimeObj.artist }}</td>
-      			<td><img src="{{ chimeObj.artwork }}"></td>
-            <td id="waveform-container-cell">
-              <div class="waveform-overlay" ng-style="{'left': chime.getLeftOffset(chimeObj), 'width': chime.getChimeWidth(chime)}"></div>
-              <img class="waveform" src="{{ chimeObj.waveform }}">
+      			<td class="text-center"><img src="{{ chimeObj.artwork }}"></td>
+            <td class="waveform-container-cell">
+              <div class="waveform-overlay" ng-style="{'left': chime.getLeftOffset(chimeObj), 'width': chime.getChimeWidth(chimeObj)}"></div>
+              <img class="waveform" src="{{ chimeObj.waveform }}" />
             </td>
       			<td>
               <a ng-click="chime.playFromStartTime(chimeObj)" class="btn btn-primary btn-sm col-xs-12">

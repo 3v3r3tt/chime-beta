@@ -48,7 +48,7 @@ angular.module('soundCloudService', [])
 
 			soundCloudFactory.mapToChime = function(track) {
 				return true;
-			}
+			};
 
 			return soundCloudFactory;
 		}

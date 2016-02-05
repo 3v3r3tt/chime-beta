@@ -46,12 +46,12 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
       vm.getLeftOffset = function(chime) {
         var leftOffset = chime.startTime/chime.duration*400 + 8;
         return leftOffset;
-      }
+      };
 
       vm.getChimeWidth = function(chime) {
         var chimeWidth = (chime.endTime - chime.startTime)*400/chime.duration;
         return chimeWidth;
-      }
+      };
 
       vm.deleteChime = function(id) {
         vm.processing = true;

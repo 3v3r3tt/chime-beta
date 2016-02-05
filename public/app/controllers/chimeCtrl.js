@@ -172,6 +172,7 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
         link: function(scope, element, attrs) {
           scope.chime.lockStartTime = function() {
             scope.chime.splicer.startTimeLocked = true;
+            scope.chime.splicer.endTime = scope.chime.splicer.startTime;
             scope.chime.setSliderOffsets();
           };
 
@@ -180,11 +181,13 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
             scope.chime.splicer.endTimeLocked = false;
             scope.chime.splicer.startTime = 0;
             scope.chime.splicer.endTime = 0;
+            scope.chime.splicer.leftOffset = 0;
           };
 
           scope.chime.adjustStartTime = function(startTime) {
             if (scope.chime.splicer.startTimeLocked || startTime === -1) { return; }
             scope.chime.splicer.startTime = startTime;
+            scope.chime.setSliderOffsets();
             scope.$apply();
           };
 
@@ -221,15 +224,13 @@ angular.module('chimeCtrl', ['chimeService', 'soundCloudService'])
 
           scope.chime.setSliderOffsets = function() {
             var startTime = +scope.chime.splicer.startTime;
+            var endTime = +scope.chime.splicer.endTime;
             var duration = +scope.chime.chimeData.duration;
             var width = angular.element(document.getElementById('slider-container'))[0].clientWidth;
+
             scope.chime.splicer.leftOffset = startTime/duration*width;
             scope.chime.splicer.widthOffset = width - scope.chime.splicer.leftOffset;
-
-            if(scope.chime.splicer.endTimeLocked) {
-              var endTime = +scope.chime.splicer.endTime;
-              scope.chime.splicer.chimeWidth = (endTime - startTime)*width/duration;
-            }
+            scope.chime.splicer.chimeWidth = (endTime - startTime)*width/duration;
           };
 
           scope.chime.playTrack = function(track) {

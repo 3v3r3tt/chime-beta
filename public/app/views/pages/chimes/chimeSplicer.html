@@ -16,7 +16,7 @@
       </label>
       <label class="col-xs-2 control-label">Description: </label>
       <label class="col-xs-10">
-        <p class="truncate-with-ellipsis" ng-bind="chime.chimeData.description"></p>
+        <p class="truncate-with-ellipsis">{{ chime.chimeData.description || 'none' }}</p>
       </label>
       <label class="col-xs-2 control-label">Genre: </label>
       <label class="col-xs-10">
@@ -36,8 +36,25 @@
     <div ng-if="chime.splicer.startTimeLocked" class="selectable-waveform-overlay" ng-style="{'left': chime.splicer.leftOffset + 15, 'width': chime.splicer.chimeWidth}"></div>
     <img class="selectable-waveform" src="{{chime.chimeData.waveform}}">
     <div id="slider-container">
-      <input ng-disabled="chime.splicer.startTimeLocked" class="start-slider" ng-model="chime.splicer.startTime" type="range" min="0" max="{{chime.chimeData.duration}}">
-      <input ng-disabled="chime.splicer.endTimeLocked" class="end-slider" ng-style="{'left': chime.splicer.leftOffset, 'width': chime.splicer.widthOffset}" ng-if="chime.splicer.startTimeLocked" ng-model="chime.splicer.endTime" type="range" min="{{chime.splicer.startTime}}" max="{{chime.chimeData.duration}}">
+      <a class="btn btn-default btn-xs start-lock-indicator" ng-style="{'left': chime.splicer.leftOffset - 10 }" ng-hide="chime.splicer.startTimeLocked" ng-click="chime.lockStartTime()">
+        <i class="fa fa-unlock"></i>
+      </a>
+      <a class="btn btn-primary btn-xs start-lock-indicator" ng-style="{'left': chime.splicer.leftOffset - 10 }" ng-show="chime.splicer.startTimeLocked" ng-click="chime.clearStartTime()">
+        <i class="fa fa-lock"></i>
+      </a>
+      <input ng-disabled="chime.splicer.startTimeLocked" ng-change="chime.setSliderOffsets()" class="start-slider" ng-model="chime.splicer.startTime" type="range" min="0" max="{{chime.chimeData.duration}}">
+
+
+
+      <div ng-if="chime.splicer.startTimeLocked">
+        <a class="btn btn-default btn-xs end-lock-indicator" ng-style="{'left': chime.splicer.leftOffset + chime.splicer.chimeWidth}" ng-hide="chime.splicer.endTimeLocked" ng-click="chime.lockEndTime()">
+          <i class="fa fa-unlock"></i>
+        </a>
+        <a class="btn btn-primary btn-xs end-lock-indicator" ng-style="{'left': chime.splicer.leftOffset + chime.splicer.chimeWidth}" ng-show="chime.splicer.endTimeLocked" ng-click="chime.clearEndTime()">
+          <i class="fa fa-lock"></i>
+        </a>
+        <input ng-disabled="chime.splicer.endTimeLocked" class="end-slider" ng-change="chime.setSliderOffsets()" ng-style="{'left': chime.splicer.leftOffset, 'width': chime.splicer.widthOffset}" ng-if="chime.splicer.startTimeLocked" ng-model="chime.splicer.endTime" type="range" min="{{chime.splicer.startTime}}" max="{{chime.chimeData.duration}}">
+      </div>
     </div>
   </div>
   <div class="col-xs-12">

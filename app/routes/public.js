@@ -5,13 +5,12 @@ var config     		= require('../../config');
 module.exports = function(app, express) {
 
 	var publicRouter = express.Router();
-	
+
 	// allow post to /interestedUsers w/o authentication
 	// ------------------------------------------------------
 	publicRouter.route('/interested_users')
 		.post(function(req, res) {
 			var interestedUser = new InterestedUser();
-			interestedUser.name = req.body.name;
 			interestedUser.email = req.body.email;
 
 			interestedUser.save(function(err) {

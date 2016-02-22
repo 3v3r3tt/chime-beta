@@ -63,7 +63,6 @@ module.exports = function(app, express) {
 
 	// route middleware to verify a token
 	apiRouter.use(function(req, res, next) {
-		console.log('Somebody just came to our app!');
 	  // check header or url parameters or post parameters for token
 	  var token = req.body.token || req.query.token || req.headers['x-access-token'];
 	  // decode token
@@ -258,9 +257,7 @@ module.exports = function(app, express) {
 
 		.post(function(req, res) {
 			var interestedUser = new InterestedUser();
-			interestedUser.name = req.body.name;
 			interestedUser.email = req.body.email;
-
 			interestedUser.save(function(err) {
 				if(err) {
 					return res.send(err);
@@ -287,9 +284,7 @@ module.exports = function(app, express) {
 
 		.put(function(req, res) {
 			InterestedUser.findById(req.params.interested_user_id, function(err, interestedUser) {
-				if (req.body.name) interestedUser.name = req.body.name;
 				if (req.body.email) interestedUser.email = req.body.email;
-
 				interestedUser.save(function(err){
 					if (err) res.send(err);
 					res.json({ message: 'Interested User updated!' });

@@ -44,14 +44,8 @@ angular.module('mainCtrl', [])
 		};
 
 		vm.doSignUp = function() {
-			console.log("signing up...");
-			console.log(vm.interestedUser);
-			console.log(vm.interestedUser.name);
-
 			InterestedUser.create(vm.interestedUser)
 				.success(function(data){
-					console.log("here");
-					console.log(data);
 					vm.interestedUser = {};
 				});
 			vm.hideSignUp = true;

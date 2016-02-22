@@ -17,7 +17,6 @@ var ChimeSchema = new Schema({
 
 ChimeSchema.pre('save', function(next) {
   var chime = this;
-  console.log('pre save of chime...');
   next();
 });
 

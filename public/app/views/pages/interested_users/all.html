@@ -1,7 +1,7 @@
 <div class="page-header">
   <h1>
 		Interested Users
-		<a href="/interested_users/create" class="btn btn-default">
+		<a href="/interested_users/create" class="btn btn-default pull-right">
 			<span class="glyphicon glyphicon-plus"></span>
 			Add Interested User
 		</a>
@@ -9,6 +9,12 @@
 </div>
 
 <div class="jumbotron">
+  <p>Count: {{interestedUser.interestedUsers.length}} users
+    <a ng-click="interestedUser.exportInterestedUsers()" class="btn btn-success pull-right">
+      <span class="glyphicon glyphicon-export"></span>
+      Export
+    </a>
+  </p>
   <div class="jumbotron text-center" ng-show="interestedUser.processing">
   	<span class="glyphicon glyphicon-repeat spinner"></span>
   	<p>Loading Interested Users...</p>

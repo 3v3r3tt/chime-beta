@@ -12,6 +12,16 @@ angular.module('interestedUserCtrl', ['interestedUserService'])
           vm.interestedUsers = data;
         });
 
+      vm.exportInterestedUsers = function() {
+        var csvContent = "data:text/csv;charset=utf-8,";
+        vm.interestedUsers.forEach(function(interestedUser, index){
+           dataString = interestedUser.email;
+           csvContent += index < vm.interestedUsers.length ? dataString+ "\n" : dataString;
+        });
+        var encodedUri = encodeURI(csvContent);
+        window.open(encodedUri);
+      }
+
       vm.deleteInterestedUser = function(id) {
         vm.processing = true;
 
